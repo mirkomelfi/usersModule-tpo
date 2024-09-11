@@ -1,30 +1,22 @@
-package api.tpo_entrega2.app.service;
+package tpo.usersmodule.service;
+
+import tpo.usersmodule.config.JwtAuthFilter;
+import tpo.usersmodule.model.dao.IUsuarioDAO;
+import tpo.usersmodule.model.entity.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import api.tpo_entrega2.app.errores.NotFoundError;
-import api.tpo_entrega2.app.model.dao.IAreaComunDAO;
-import api.tpo_entrega2.app.model.dao.IUsuarioDAO;
-import api.tpo_entrega2.app.model.entity.AreaComun;
-import api.tpo_entrega2.app.model.entity.Edificio;
-import api.tpo_entrega2.app.model.entity.Unidad;
-import api.tpo_entrega2.app.model.entity.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import api.tpo_entrega2.app.config.JwtAuthFilter;
-
 @Service
 public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private IUsuarioDAO usuarioDAO;
-    @Autowired
-    private IAreaComunDAO areaDAO;
     @Autowired
     private JwtAuthFilter jwt;
 
@@ -34,7 +26,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (user != null) {
             return user;
         }
-        throw new NotFoundError("El usuario no existe");
+        throw new Error /*NotFoundError*/("El usuario no existe");
     }
 
     @Override
@@ -47,7 +39,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             throw new Error("Ocurrio un problema al buscar el usuario");
         }
         if (user == null)
-            throw new NotFoundError("No existe ningun usuario con username:" + username);
+            throw new Error /*NotFoundError*/("No existe ningun usuario con username:" + username);
         if (checkPassword(password, user.getPassword())) {
             return user;
         }
@@ -133,31 +125,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public List<Unidad> getUnidades() {
-        String username = jwt.getUsername();
-        Usuario usr = this.findByUsername(username);
-        Set<Unidad> unidades = new HashSet<Unidad>();
-        List<Unidad> result = new ArrayList<Unidad>();
-        if (usr == null)
-            throw new Error("No se encontro el usuario");
-        for (Unidad u : usr.getAlquileres()) {
-
-            if (u.getResponsable().getDni() == usr.getDni())
-                unidades.add(u);
-        }
-        for (Unidad u : usr.getPropiedades()) {
-            if (u.getResponsable().getDni() == usr.getDni())
-                unidades.add(u);
-        }
-        for (Unidad u : unidades) {
-            result.add(u);
-        }
-        if (unidades.isEmpty())
-            throw new Error("No hay unidades para este usuario");
-        return result;
-    }
-
-    @Override
     public Usuario findLogged() {
         try {
             Usuario u = this.usuarioDAO.findByUsername(jwt.getUsername());
@@ -179,29 +146,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
             throw new Error(e.getMessage());
         }
 
-    }
-
-    @Override
-    public List<AreaComun> getAreas() {
-        try {
-            Usuario usr = this.findLogged();
-            Set<Edificio> edificios = new HashSet<Edificio>();
-            List<AreaComun> areas = new ArrayList<AreaComun>();
-            for (Unidad u : usr.getAlquileres()) {
-                edificios.add(u.getEdificio());
-            }
-            for (Unidad u : usr.getPropiedades()) {
-                edificios.add(u.getEdificio());
-            }
-            for (Edificio e : edificios) {
-                areas.addAll(e.getAreasComunes());
-            }
-            if (areas.isEmpty())
-                throw new Error("No hay areas para este usuario");
-            return areas;
-        } catch (Throwable e) {
-            throw new Error(e.getMessage());
-        }
     }
 
     private boolean checkPassword(String password, String passwordDB) {

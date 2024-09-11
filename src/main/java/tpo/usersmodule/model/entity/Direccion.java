@@ -1,4 +1,4 @@
-package api.tpo_entrega2.app.model.entity;
+package tpo.usersmodule.model.entity;
 
 import jakarta.persistence.Embeddable;
 

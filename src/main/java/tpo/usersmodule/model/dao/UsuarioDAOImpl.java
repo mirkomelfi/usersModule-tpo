@@ -1,6 +1,6 @@
 package tpo.usersmodule.model.dao;
 
-import api.tpo_entrega2.app.model.entity.Usuario;
+import tpo.usersmodule.model.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.hibernate.Session;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class UserDAOImpl implements IUserDAO {
+public class UsuarioDAOImpl implements IUsuarioDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -22,6 +22,19 @@ public class UserDAOImpl implements IUserDAO {
         Session currentSession = entityManager.unwrap(Session.class);
         Usuario res = currentSession.get(Usuario.class, dni);
         return res;
+    }
+
+    @Override
+    @Transactional
+    public List<Usuario> findByRol(String rol) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        Query<Usuario> theQuery = currentSession.createQuery("FROM Usuario WHERE rol=:rol", Usuario.class);
+        theQuery.setParameter("rol", rol);
+
+        List<Usuario> list = theQuery.getResultList();
+
+        return list;
+
     }
 
 
@@ -67,6 +80,7 @@ public class UserDAOImpl implements IUserDAO {
         List<Usuario> list = currentSession.createQuery(query, Usuario.class).getResultList();
         return list;
     }
+
 
     @Override
     @Transactional

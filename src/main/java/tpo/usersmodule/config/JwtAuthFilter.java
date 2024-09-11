@@ -1,4 +1,4 @@
-package api.tpo_entrega2.app.config;
+package tpo.usersmodule.config;
 
 import java.io.IOException;
 import java.util.ArrayList;

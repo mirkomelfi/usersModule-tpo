@@ -1,48 +1,37 @@
-package api.tpo_entrega2.app.controller.dtos;
+package tpo.usersmodule.controller.dtos;
 
-import api.tpo_entrega2.app.model.entity.Usuario;
+import tpo.usersmodule.model.entity.Usuario;
 
 import java.util.List;
 
 public class UsuarioDTO {
-	private int Dni;
+	private int dni;
 	private String username;
 	private String password;
 	private String nombre;
 	private String apellido;
 	private String rol;
+
 	public UsuarioDTO() {
 		super();
 	}
 
-
-	public UsuarioDTO(int dni, String username, String password, String nombre, String apellido,
-			List<ReclamoDTO> reclamos,String rol) {
+	public UsuarioDTO(Usuario user) {
 		super();
-		Dni = dni;
-		this.username = username;
-		this.password = password;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.rol = "ROL_USER";
-	}
-
-
-	public UsuarioDTO(Usuario u) {
-		super();
-		this.Dni = u.getDni();
-		this.username = u.getUsername();
-		this.password = u.getPassword();
-		this.nombre = u.getNombre();
-		this.apellido = u.getApellido();
+		this.dni = user.getDni();
+		this.username = user.getUsername();
+		this.password = user.getPassword();
+		this.nombre = user.getNombre();
+		this.apellido = user.getApellido();
+		this.rol = user.getRol();
 	}
 
 	public int getDni() {
-		return Dni;
+		return dni;
 	}
 
 	public void setDni(int dni) {
-		Dni = dni;
+		this.dni = dni;
 	}
 
 	public String getUsername() {
@@ -77,15 +66,11 @@ public class UsuarioDTO {
 		this.apellido = apellido;
 	}
 
-
-	@Override
-	public String toString() {
-		return "UsuarioDTO [Dni=" + Dni + ", username=" + username + ", password=" + password + ", nombre=" + nombre
-				+ ", apellido=" + apellido + "]";
+	public void setRol(String rol) {
+		this.rol = rol;
 	}
 
-
-    public Object getRol() {
+	public Object getRol() {
 		return this.rol;
     }
 }
