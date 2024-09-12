@@ -1,9 +1,12 @@
 package tpo.usersmodule.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.IActividadDAO;
+import tpo.usersmodule.model.dao.IImagenDAO;
 import tpo.usersmodule.model.entity.Actividad;
+import tpo.usersmodule.model.entity.Imagen;
 
 import java.util.List;
 
@@ -11,6 +14,8 @@ import java.util.List;
 public class ActividadServiceImpl implements IActividadService {
     @Autowired
     private IActividadDAO actividadDAO;
+    @Autowired
+    private IImagenDAO imgDAO;
 
     @Override
     public Actividad findById(int id) {
@@ -87,6 +92,60 @@ public class ActividadServiceImpl implements IActividadService {
             throw new Error("Error al guardar el actividad." + e.getMessage());
         }
 
+    }
+
+    @Override
+    public void saveImagen(Imagen imagen, int actividadId) {
+        Actividad actividad = actividadDAO.findById(actividadId);
+        if (actividad != null) {
+            imagen.setActividad(actividad);
+            imgDAO.save(imagen);
+            return;
+        }
+        throw new Error("No se econtro el actividad");
+
+    }
+
+    @Override
+    public Imagen findImagen(int idActividad, int numeroImagen) {
+        Actividad act = this.actividadDAO.findById(idActividad);
+        if (act == null) throw new Error("No se encotnro el actividad");
+        if (numeroImagen <= 0 || numeroImagen > act.getImagenes().size() || act.getImagenes().isEmpty())
+            throw new Error("No se encontró la imagen");
+        Imagen img = act.getImagenes().get(numeroImagen - 1);
+        return img;
+
+    }
+
+    @Override
+    public void deleteImagen(int idActividad, int num) {
+        Actividad r = this.actividadDAO.findById(idActividad);
+        Imagen i;
+        Long id;
+        if (num <= 0 || num > r.getImagenes().size() || r.getImagenes().isEmpty())
+            throw new Error("numero de imagen invalido");
+        i = r.getImagenes().get(num - 1);
+        id = i.getId();
+        r.getImagenes().remove(i);
+        imgDAO.deleteById(id);
+        return;
+
+    }
+
+    @Override
+    public List<Imagen> findImagenes(int idAct) {
+        List<Imagen> result = null;
+        try{
+            result = imgDAO.getImagenesPorActividad(idAct);
+        }catch (EmptyResultDataAccessException e){
+            throw e;
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace();
+            throw new Error("Error interno.");
+        }
+        return result;
     }
     
     

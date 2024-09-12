@@ -3,6 +3,8 @@ package tpo.usersmodule.model.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "noticias")
@@ -15,19 +17,22 @@ public class Noticia {
 	String titulo;
 	@Column(nullable = false)
 	String descripcion;
-	//String fotos;
+	@OneToMany(mappedBy = "noticia", cascade = CascadeType.ALL)
+	List<Imagen> imagenes;
 	@Temporal(TemporalType.DATE)
-	LocalDate fecha;
+	LocalDate fechaPublicacion;
 
-	public Noticia(int id, String titulo, String descripcion, LocalDate fecha) {
+	public Noticia(int id, String titulo, String descripcion, LocalDate fechaPublicacion) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
-		this.fecha = fecha;
+		this.fechaPublicacion = LocalDate.now();
+		this.imagenes = new ArrayList<Imagen>();
 	}
 
 	public Noticia() {
-
+		this.fechaPublicacion = LocalDate.now();
+		this.imagenes = new ArrayList<Imagen>();
 	}
 
 	public int getId() {
@@ -46,6 +51,14 @@ public class Noticia {
 		this.titulo = titulo;
 	}
 
+	public List<Imagen> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(List<Imagen> imagenes) {
+		this.imagenes = imagenes;
+	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}
@@ -54,11 +67,11 @@ public class Noticia {
 		this.descripcion = descripcion;
 	}
 
-	public LocalDate getFecha() {
-		return fecha;
+	public LocalDate getFechaPublicacion() {
+		return fechaPublicacion;
 	}
 
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
+	public void setFechaPublicacion(LocalDate fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
 	}
 }

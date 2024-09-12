@@ -1,6 +1,6 @@
 package tpo.usersmodule.service;
 
-import tpo.usersmodule.config.JwtAuthFilter;
+//import tpo.usersmodule.config.JwtAuthFilter;
 import tpo.usersmodule.model.dao.IUsuarioDAO;
 import tpo.usersmodule.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,8 @@ import java.util.Set;
 public class UsuarioServiceImpl implements IUsuarioService {
     @Autowired
     private IUsuarioDAO usuarioDAO;
-    @Autowired
-    private JwtAuthFilter jwt;
+    //@Autowired
+    //private JwtAuthFilter jwt;
 
     @Override
     public Usuario findByDni(int dni) {
@@ -127,8 +127,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public Usuario findLogged() {
         try {
-            Usuario u = this.usuarioDAO.findByUsername(jwt.getUsername());
+           /* Usuario u = this.usuarioDAO.findByUsername(jwt.getUsername());
             return u;
+            */
+            return null;
 
         } catch (Throwable e) {
             throw new Error(e.getMessage());

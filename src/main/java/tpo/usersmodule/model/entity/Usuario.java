@@ -8,6 +8,8 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios",uniqueConstraints = { @UniqueConstraint(columnNames = { "username"}) })
 public class Usuario {
+	@Id
+	int dni;
 	@Column(nullable = false)
 	String username;
 	@Column(nullable = false)
@@ -18,8 +20,6 @@ public class Usuario {
 	//String email;
 	@Embedded
 	Direccion direccion;
-	@Id
-	int dni;
 	int telefono;
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaNacimiento;

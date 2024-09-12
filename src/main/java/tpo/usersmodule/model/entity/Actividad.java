@@ -18,7 +18,8 @@ public class Actividad {
 	String nombre;
 	@Column(nullable = false)
 	String descripcion;
-	//String fotos;
+	@OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
+	List<Imagen> imagenes;
 	List<String> dias;
 	float valor;
 	String profesor;
@@ -31,10 +32,12 @@ public class Actividad {
 		this.dias = new ArrayList<String>();
 		this.valor = valor;
 		this.profesor = profesor;
+		this.imagenes = new ArrayList<Imagen>();
 	}
 
 	public Actividad() {
-
+		this.imagenes = new ArrayList<Imagen>();
+		this.dias = new ArrayList<String>();
 	}
 
 	public int getId() {
@@ -51,6 +54,14 @@ public class Actividad {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public List<Imagen> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(List<Imagen> imagenes) {
+		this.imagenes = imagenes;
 	}
 
 	public String getDescripcion() {
