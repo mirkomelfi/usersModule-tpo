@@ -132,6 +132,8 @@ public class ActividadServiceImpl implements IActividadService {
 
     }
 
+
+    // x ahora no se usa
     @Override
     public List<Imagen> findImagenes(int idAct) {
         List<Imagen> result = null;

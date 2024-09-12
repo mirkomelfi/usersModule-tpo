@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tpo.usersmodule.controller.dtos.ActividadDTO;
 import tpo.usersmodule.controller.dtos.ImagenDTO;
 import tpo.usersmodule.model.entity.Actividad;
 import tpo.usersmodule.model.entity.Imagen;
@@ -31,8 +32,8 @@ public class ActividadController {
     public ResponseEntity<?> getActividades() {
         try {
             List<Actividad> acts = actividadService.findAll();
-
-            return new ResponseEntity<>(acts, HttpStatus.OK);
+            List<ActividadDTO> dtos = convertirActsADTO(acts); // Xq sino vienen con el listado de imagenes y se arma un bucle infinito
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -46,7 +47,9 @@ public class ActividadController {
     public ResponseEntity<?> getActividad(@PathVariable int id) {
         try {
             Actividad act = actividadService.findById(id);
-            return new ResponseEntity<>(act, HttpStatus.OK);
+            ActividadDTO dto = new ActividadDTO(act); // Xq sino vienen con el listado de imagenes y se arma un bucle infinito
+
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Throwable e) {
             String msj = e.getMessage();
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
@@ -102,7 +105,7 @@ public class ActividadController {
     //Manejo de imagenes
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @PutMapping("/actividades/{actividadId}/imagenes")
+    @PutMapping("/admin/actividades/{actividadId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int actividadId) {
         String msj;
         try {
@@ -117,7 +120,7 @@ public class ActividadController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/actividades/{idActividad}/imagenes/{num}")
+    @GetMapping("/admin/actividades/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idActividad) {
         String msj;
         try {
@@ -133,7 +136,7 @@ public class ActividadController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @DeleteMapping("/actividades/{idActividad}/imagenes/{num}")
+    @DeleteMapping("/admin/actividades/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> deleteImagen(@PathVariable int num, @PathVariable int idActividad) {
         String msj;
         try {
@@ -148,7 +151,8 @@ public class ActividadController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/actividades/{actividadID}/imagenes")
+    // Por ahora este no se usa
+    @GetMapping("/admin/actividades/{actividadID}/imagenes")
     public ResponseEntity<?> getArchivos (@PathVariable int actividadID) throws IOException {
 
         try {
@@ -159,5 +163,15 @@ public class ActividadController {
         }
         catch(Throwable e) {return new ResponseEntity<>(new Mensaje(e.getMessage()),HttpStatus.NOT_ACCEPTABLE);}
     }
-    
+
+    private List<ActividadDTO> convertirActsADTO(List<Actividad> acts) {
+        List<ActividadDTO> dtos = new ArrayList<ActividadDTO>();
+        if (acts != null) {
+            for (Actividad act: acts) {
+                dtos.add(new ActividadDTO(act));
+            }
+        }
+        return dtos;
+    }
+
 }

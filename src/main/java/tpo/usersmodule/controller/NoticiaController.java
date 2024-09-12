@@ -6,13 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tpo.usersmodule.controller.dtos.ActividadDTO;
+import tpo.usersmodule.controller.dtos.NoticiaDTO;
 import tpo.usersmodule.controller.dtos.ImagenDTO;
+import tpo.usersmodule.model.entity.Noticia;
 import tpo.usersmodule.model.entity.Imagen;
 import tpo.usersmodule.model.entity.Noticia;
 import tpo.usersmodule.service.INoticiaService;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,8 +30,8 @@ public class NoticiaController {
     public ResponseEntity<?> getNoticias() {
         try {
             List<Noticia> nots = noticiaService.findAll();
-
-            return new ResponseEntity<>(nots, HttpStatus.OK);
+            List<NoticiaDTO> dtos = convertirNoticiasADTO(nots);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -41,7 +45,8 @@ public class NoticiaController {
     public ResponseEntity<?> getNoticia(@PathVariable int id) {
         try {
             Noticia not = noticiaService.findById(id);
-            return new ResponseEntity<>(not, HttpStatus.OK);
+            NoticiaDTO dto = new NoticiaDTO(not);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Throwable e) {
             String msj = e.getMessage();
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
@@ -71,7 +76,7 @@ public class NoticiaController {
         String msj;
         try {
             noticiaService.update(id, not);
-            msj = "Noticia actualizada correctamente";
+            msj = "Noticia noticiaualizada correctamente";
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();
@@ -97,7 +102,7 @@ public class NoticiaController {
     //Manejo de imagenes
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @PutMapping("/noticias/{noticiaId}/imagenes")
+    @PutMapping("/admin/noticias/{noticiaId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int noticiaId) {
         String msj;
         try {
@@ -112,7 +117,7 @@ public class NoticiaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/noticias/{idNoticia}/imagenes/{num}")
+    @GetMapping("/admin/noticias/{idNoticia}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idNoticia) {
         String msj;
         try {
@@ -128,7 +133,7 @@ public class NoticiaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @DeleteMapping("/noticias/{idNoticia}/imagenes/{num}")
+    @DeleteMapping("/admin/noticias/{idNoticia}/imagenes/{num}")
     public ResponseEntity<?> deleteImagen(@PathVariable int num, @PathVariable int idNoticia) {
         String msj;
         try {
@@ -142,4 +147,14 @@ public class NoticiaController {
 
     }
 
+    private List<NoticiaDTO> convertirNoticiasADTO(List<Noticia> noticias) {
+        List<NoticiaDTO> dtos = new ArrayList<NoticiaDTO>();
+        if (noticias != null) {
+            for (Noticia noticia: noticias) {
+                dtos.add(new NoticiaDTO(noticia));
+            }
+        }
+        return dtos;
+    }
+    
 }

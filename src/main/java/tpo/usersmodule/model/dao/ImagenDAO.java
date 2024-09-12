@@ -41,12 +41,24 @@ public class ImagenDAO implements IImagenDAO {
 
     }
 
+
+    // x ahora no se usan
     @Override
     @Transactional
     public List<Imagen> getImagenesPorActividad(int idAct) {
         List<Imagen> result;
         Session currentSession = entityManager.unwrap(Session.class);
-        result= currentSession.createQuery("FROM Imagen WHERE idAct = :idAct").setParameter("idAct",idAct).getResultList();
+        result= currentSession.createQuery("FROM Imagen WHERE id = :idAct").setParameter("idAct",idAct).getResultList();
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    public List<Imagen> getImagenesPorNoticia(int idNoticia) {
+        List<Imagen> result;
+        Session currentSession = entityManager.unwrap(Session.class);
+        result= currentSession.createQuery("FROM Imagen WHERE id = :idNoticia").setParameter("idNoticia",idNoticia).getResultList();
 
         return result;
     }

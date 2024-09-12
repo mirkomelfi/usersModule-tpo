@@ -8,5 +8,8 @@ public interface IImagenDAO {
 	public void deleteById(long id);
 	public Imagen findById(int id);
 	public void save(Imagen imagen);
+
+	// x ahora no se usan
 	public List<Imagen> getImagenesPorActividad(int idAct);
+	public List<Imagen> getImagenesPorNoticia(int idNoticia);
 }
