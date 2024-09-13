@@ -41,11 +41,12 @@ public class NoticiaServiceImpl implements INoticiaService {
     }
 
     @Override
-    public void save(Noticia noticia) {
+    public int save(Noticia noticia) {
 
         try {
-            noticiaDAO.save(noticia);
-            return;
+            int id=noticiaDAO.save(noticia);
+            System.out.print(id+" : id noticia");
+            return id;
         } catch (Exception e) {
             throw new Error("Error interno en la BD");
         }

@@ -26,9 +26,10 @@ public class NoticiaDAOImpl implements INoticiaDAO {
 
     @Override
     @Transactional
-    public void save(Noticia noticia) {
+    public int save(Noticia noticia) {
         Session currentSession = entityManager.unwrap(Session.class);
         currentSession.persist(noticia);
+        return noticia.getId();
     }
 
 

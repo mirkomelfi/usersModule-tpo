@@ -24,6 +24,15 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaNacimiento;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	private Agenda agenda;
+
+	@OneToMany(mappedBy = "usuarioSolicitante")
+	private List<Turno> turnosSolicitados;
+
+	@OneToMany(mappedBy = "usuarioReservado")
+	private List<Turno> turnosReservados;
+
 	public Usuario() {
 		super();
 		this.rol = "ROL_USER";

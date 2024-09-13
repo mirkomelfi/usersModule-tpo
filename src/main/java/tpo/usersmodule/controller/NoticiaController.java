@@ -26,7 +26,7 @@ public class NoticiaController {
     private INoticiaService noticiaService;
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/admin/noticias")
+    @GetMapping("/noticias")
     public ResponseEntity<?> getNoticias() {
         try {
             List<Noticia> nots = noticiaService.findAll();
@@ -41,7 +41,7 @@ public class NoticiaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @GetMapping("/admin/noticias/{id}")
+    @GetMapping("/noticias/{id}")
     public ResponseEntity<?> getNoticia(@PathVariable int id) {
         try {
             Noticia not = noticiaService.findById(id);
@@ -55,14 +55,15 @@ public class NoticiaController {
     }
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @CrossOrigin
     @PostMapping("/admin/noticias")
     public ResponseEntity<?> addNoticia(@RequestBody Noticia not) {
         String msj = "";
 
         try {
-            noticiaService.save(not);
+            int id=noticiaService.save(not);
             msj = "Noticia guardada exitosamente";
-            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje(msj,id), HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
@@ -102,6 +103,7 @@ public class NoticiaController {
     //Manejo de imagenes
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
+    @CrossOrigin
     @PutMapping("/admin/noticias/{noticiaId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int noticiaId) {
         String msj;
@@ -117,7 +119,8 @@ public class NoticiaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/admin/noticias/{idNoticia}/imagenes/{num}")
+    @CrossOrigin
+    @GetMapping("/noticias/{idNoticia}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idNoticia) {
         String msj;
         try {

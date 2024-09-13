@@ -10,7 +10,7 @@ public interface INoticiaService {
 
     public Noticia findById(int id);
     public List<Noticia> findAll();
-    public void save(Noticia noticia);
+    public int save(Noticia noticia);
     public void update(int id, Noticia noticia);
     public void deleteById(int id);
 
