@@ -24,8 +24,8 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaNacimiento;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Agenda agenda;
+	//@OneToOne(cascade = CascadeType.ALL)
+	//private Agenda agenda;
 
 	@OneToMany(mappedBy = "usuarioSolicitante")
 	private List<Turno> turnosSolicitados;

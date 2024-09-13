@@ -2,6 +2,7 @@ package tpo.usersmodule.model.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,26 +13,23 @@ public class Turno {
 	@Id
 	@Column(name = "idTurno", nullable = false)
 	private int id;
-	private boolean reservado;
-	private LocalDateTime fechaHora;
+	private Timestamp fechaHora;
 	@ManyToOne
 	private Usuario usuarioSolicitante;
 	@ManyToOne
 	private Usuario usuarioReservado;
 
-	@ManyToOne
-	private Agenda agenda;
+	//@ManyToOne
+	//private Agenda agenda;
 
 	public Turno() {
 	}
 
-	public Turno(int id, boolean reservado, LocalDateTime fechaHora, Usuario usuarioSolicitante, Usuario usuarioReservado, Agenda agenda) {
+	public Turno(int id, Timestamp fechaHora, Usuario usuarioSolicitante, Usuario usuarioReservado) {
 		this.id = id;
-		this.reservado = reservado;
 		this.fechaHora = fechaHora;
 		this.usuarioSolicitante = usuarioSolicitante;
 		this.usuarioReservado = usuarioReservado;
-		this.agenda = agenda;
 	}
 
 	public int getId() {
@@ -42,19 +40,11 @@ public class Turno {
 		this.id = id;
 	}
 
-	public boolean isReservado() {
-		return reservado;
-	}
-
-	public void setReservado(boolean reservado) {
-		this.reservado = reservado;
-	}
-
-	public LocalDateTime getFechaHora() {
+	public Timestamp getFechaHora() {
 		return fechaHora;
 	}
 
-	public void setFechaHora(LocalDateTime fechaHora) {
+	public void setFechaHora(Timestamp fechaHora) {
 		this.fechaHora = fechaHora;
 	}
 
@@ -74,11 +64,13 @@ public class Turno {
 		this.usuarioReservado = usuarioReservado;
 	}
 
-	public Agenda getAgenda() {
-		return agenda;
-	}
-
-	public void setAgenda(Agenda agenda) {
-		this.agenda = agenda;
+	@Override
+	public String toString() {
+		return "Turno{" +
+				"id=" + id +
+				", fechaHora=" + fechaHora +
+				", usuarioSolicitante=" + usuarioSolicitante +
+				", usuarioReservado=" + usuarioReservado +
+				'}';
 	}
 }
