@@ -43,6 +43,9 @@ public class TurnoServiceImpl {
     public void save(int dniSolicitante, int dniSolicitado, Turno turno) {
 
         try {
+
+            validarDisponibilidad(dniSolicitante, dniSolicitado, turno);
+
             Usuario solicitante= usuarioDAO.findByDni(dniSolicitante);
             Usuario solicitado= usuarioDAO.findByDni(dniSolicitado);
             turno.setUsuarioSolicitante(solicitante);
@@ -72,5 +75,28 @@ public class TurnoServiceImpl {
     }
 
 
+    void validarDisponibilidad(int dniSolicitante, int dniSolicitado, Turno turno) {
+
+        List<Turno> turnosSolicitante= turnoDAO.findAll(dniSolicitante);
+        List<Turno> turnosSolicitado= turnoDAO.findAll(dniSolicitado);
+
+        for (Turno t : turnosSolicitante){
+
+            if (t.getFechaHora().equals(turno.getFechaHora())){
+                throw new Error("Error: Usted tiene este horario ocupado con otra reunión");
+            }
+        }
+        for (Turno t : turnosSolicitado){
+
+            if (t.getFechaHora().equals(turno.getFechaHora())){
+                throw new Error("Error: El horario seleccionado se encuentra ocupado para dicho usuario");
+            }
+        }
+
+
+    }
 
 }
+
+
+

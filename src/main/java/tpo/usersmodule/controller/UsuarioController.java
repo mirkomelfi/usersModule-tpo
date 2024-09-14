@@ -74,6 +74,24 @@ public class UsuarioController {
         }
 
     }
+    @CrossOrigin
+    @GetMapping("/usuarios/{rol}")
+    public ResponseEntity<?> getUsersByRol(@PathVariable String rol) {
+        try {
+            List<Usuario> users = usuarioService.findByRol(rol);
+            List<UsuarioDTO> dtos = new ArrayList<UsuarioDTO>();
+            for (Usuario u : users) {
+                dtos.add(new UsuarioDTO(u));
+            }
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 
     @PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/admin/usuarios/{userDni}")

@@ -121,4 +121,20 @@ public class Usuario {
 	public void setDni(int dni) {
 		this.dni = dni;
 	}
+
+	public List<Turno> getTurnosSolicitados() {
+		return turnosSolicitados;
+	}
+
+	public void setTurnosSolicitados(List<Turno> turnosSolicitados) {
+		this.turnosSolicitados = turnosSolicitados;
+	}
+
+	public List<Turno> getTurnosReservados() {
+		return turnosReservados;
+	}
+
+	public void setTurnosReservados(List<Turno> turnosReservados) {
+		this.turnosReservados = turnosReservados;
+	}
 }

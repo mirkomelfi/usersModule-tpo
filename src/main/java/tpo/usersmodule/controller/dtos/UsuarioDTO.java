@@ -7,6 +7,7 @@ import java.util.List;
 public class UsuarioDTO {
 	private int dni;
 	private String username;
+	//deberia sacar la pass
 	private String password;
 	private String nombre;
 	private String apellido;

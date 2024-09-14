@@ -12,14 +12,14 @@ public class TurnoDTO {
 
 	private int id;
 	private Timestamp fechaHora;
-	private int usuarioSolicitante;
-	private int usuarioReservado;
+	private UsuarioDTO usuarioSolicitante;
+	private UsuarioDTO usuarioReservado;
 
 
 	public TurnoDTO(Turno t) {
 		this.id = t.getId();
-		this.usuarioSolicitante = t.getUsuarioSolicitante().getDni();
-		this.usuarioReservado = t.getUsuarioReservado().getDni();
+		this.usuarioSolicitante = new UsuarioDTO(t.getUsuarioSolicitante());
+		this.usuarioReservado = new UsuarioDTO(t.getUsuarioReservado());
 		this.fechaHora = t.getFechaHora();
 	}
 
@@ -43,19 +43,19 @@ public class TurnoDTO {
 		this.fechaHora = fechaHora;
 	}
 
-	public int getUsuarioSolicitante() {
+	public UsuarioDTO getUsuarioSolicitante() {
 		return usuarioSolicitante;
 	}
 
-	public void setUsuarioSolicitante(int usuarioSolicitante) {
+	public void setUsuarioSolicitante(UsuarioDTO usuarioSolicitante) {
 		this.usuarioSolicitante = usuarioSolicitante;
 	}
 
-	public int getUsuarioReservado() {
+	public UsuarioDTO getUsuarioReservado() {
 		return usuarioReservado;
 	}
 
-	public void setUsuarioReservado(int usuarioReservado) {
+	public void setUsuarioReservado(UsuarioDTO usuarioReservado) {
 		this.usuarioReservado = usuarioReservado;
 	}
 }

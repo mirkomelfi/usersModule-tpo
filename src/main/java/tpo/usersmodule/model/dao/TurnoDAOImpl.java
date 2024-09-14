@@ -40,9 +40,7 @@ public class TurnoDAOImpl implements ITurnoDAO {
         Query<Turno> theQuery = currentSession.createQuery("FROM Turno WHERE usuarioSolicitante.dni=:dni OR usuarioReservado.dni=:dni", Turno.class);
         theQuery.setParameter("dni", dni);
 
-
         List<Turno> list = theQuery.getResultList();
-
 
         return list;
     }

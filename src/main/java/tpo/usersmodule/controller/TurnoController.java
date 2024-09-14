@@ -27,8 +27,8 @@ public class TurnoController {
     public ResponseEntity<?> getTurnos(@PathVariable int dni) {
         try {
             List<Turno> turnos = turnoService.findAll(dni);
-            //List<TurnoDTO> dtos = convertirTurnosADTO(turnos);
-            return new ResponseEntity<>(turnos, HttpStatus.OK);
+            List<TurnoDTO> dtos = convertirTurnosADTO(turnos);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();

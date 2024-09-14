@@ -56,6 +56,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
+    public List<Usuario> findByRol(String rol) {
+        List<Usuario> usuarios  = usuarioDAO.findByRol(rol);
+        if (usuarios == null)
+            throw new Error("Error al buscar los datos (null)");
+        if (usuarios.size() == 0)
+            throw new Error("No se encontraron usuarios");
+        return usuarios;
+    }
+
+    @Override
     public List<Usuario> findAll() {
         List<Usuario> usuarios = usuarioDAO.findAll();
         if (usuarios == null)
