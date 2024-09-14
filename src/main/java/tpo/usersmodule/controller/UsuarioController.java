@@ -57,7 +57,7 @@ public class UsuarioController {
 
 
     // RUTAS DE ADMIN
-    @PreAuthorize("hasAuthority('ROL_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/admin/usuarios")
     public ResponseEntity<?> getUsers() {
         try {
@@ -78,6 +78,7 @@ public class UsuarioController {
     @GetMapping("/usuarios/{rol}")
     public ResponseEntity<?> getUsersByRol(@PathVariable String rol) {
         try {
+
             List<Usuario> users = usuarioService.findByRol(rol);
             List<UsuarioDTO> dtos = new ArrayList<UsuarioDTO>();
             for (Usuario u : users) {
@@ -124,7 +125,7 @@ public class UsuarioController {
 
     }
 
-    @PreAuthorize("hasAuthority('ROL_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> updateUser(@PathVariable int userDni, @RequestBody Usuario user) {
         String msj;
@@ -138,7 +139,22 @@ public class UsuarioController {
         }
     }
 
-    @PreAuthorize("hasAuthority('ROL_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @PutMapping("/admin/usuarios/{userDni}/rol")
+    public ResponseEntity<?> updateRol(@PathVariable int userDni, @RequestBody Usuario user) {
+        String msj;
+        try {
+            usuarioService.updateRol(userDni, user.getRol());
+            msj = "Rol del Usuario actualizado correctamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+
+   // @PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> deleteUser(@PathVariable int userDni) {
         String msj;

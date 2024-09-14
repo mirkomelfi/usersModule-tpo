@@ -16,7 +16,7 @@ public interface IUsuarioService {
     public void update(int dni, Usuario usuario);
 
     public void update(Usuario data);
-
+    public void updateRol(int dni, String rol);
     public void deleteByDni(int dni);
 
     // NO SE SI HACEN FALTA

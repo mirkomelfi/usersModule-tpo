@@ -160,6 +160,18 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     }
 
+    @Override
+    public void updateRol(int dni, String rol) {
+        try {
+            Usuario usr = this.findByDni(dni);
+            usr.setRol(rol);
+            this.usuarioDAO.save(usr);
+        } catch (Throwable e) {
+            throw new Error(e.getMessage());
+        }
+
+    }
+
     private boolean checkPassword(String password, String passwordDB) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         boolean isPasswordMatch = passwordEncoder.matches(password, passwordDB);
