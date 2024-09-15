@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tpo.usersmodule.controller.dtos.CampañaDTO;
+import tpo.usersmodule.controller.dtos.OpcionDTO;
 import tpo.usersmodule.model.entity.Campaña;
 import tpo.usersmodule.model.entity.Opcion;
 import tpo.usersmodule.service.CampañaServiceImpl;
@@ -24,7 +26,8 @@ public class CampañaController {
     public ResponseEntity<?> getCampañaById(@PathVariable int id) {
         try {
             Campaña campaña = campañaService.findById(id);
-            return new ResponseEntity<>(campaña, HttpStatus.OK);
+            CampañaDTO dto= new CampañaDTO(campaña);
+            return new ResponseEntity<>(dto, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -37,7 +40,8 @@ public class CampañaController {
     public ResponseEntity<?> getCampañas() {
         try {
             List<Campaña> campañas = campañaService.findAll();
-            return new ResponseEntity<>(campañas, HttpStatus.OK);
+            List<CampañaDTO> dtos = convertirCampañasADTO(campañas);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -51,7 +55,8 @@ public class CampañaController {
     public ResponseEntity<?> getCampañasAbiertas() {
         try {
             List<Campaña> campañas = campañaService.findAbiertas();
-            return new ResponseEntity<>(campañas, HttpStatus.OK);
+            List<CampañaDTO> dtos = convertirCampañasADTO(campañas);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -65,7 +70,8 @@ public class CampañaController {
     public ResponseEntity<?> getCampañasCerradas() {
         try {
             List<Campaña> campañas = campañaService.findCerradas();
-            return new ResponseEntity<>(campañas, HttpStatus.OK);
+            List<CampañaDTO> dtos = convertirCampañasADTO(campañas);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -75,7 +81,7 @@ public class CampañaController {
     }
 
     @CrossOrigin
-    @GetMapping("/cerrarCampaña/{id}")
+    @GetMapping("/campañas/{id}/cerrar")
     public ResponseEntity<?> getCerrarCampañaById(@PathVariable int id) {
         try {
             campañaService.cerrarCampaña(id);
@@ -89,16 +95,14 @@ public class CampañaController {
     }
 
     @CrossOrigin
-    @GetMapping("/cerrarCampaña/{id}")
+    @GetMapping("/campañas/{id}/ganador")
     public ResponseEntity<?> getGanadorById(@PathVariable int id) {
         try {
             List<Opcion> opciones = campañaService.findOpcionGanadoraById(id);
-            if (opciones.size()==1){
-                return new ResponseEntity<>(opciones.getFirst(), HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity<>(opciones, HttpStatus.OK);
-            }
+
+            List<OpcionDTO> dtos =convertirOpcionesADTO(opciones);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
 
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -126,6 +130,22 @@ public class CampañaController {
     }
 
 
+    @CrossOrigin
+    @PutMapping("/campañas/{idCampaña}/votacion/{idOpcion}/usuario/{dni}")
+    public ResponseEntity<?> addVoto(@PathVariable int idCampaña,@PathVariable int idOpcion,@PathVariable int dni) {
+        String msj = "";
+
+        try {
+            campañaService.saveVoto(idCampaña,idOpcion,dni);
+            msj = "Voto registrado";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/campañas/{id}")
     public ResponseEntity<?> deleteCampaña(@PathVariable int id) {
@@ -139,5 +159,26 @@ public class CampañaController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-    
+
+    private List<CampañaDTO> convertirCampañasADTO(List<Campaña> campañas) {
+        List<CampañaDTO> dtos = new ArrayList<CampañaDTO>();
+        if (campañas != null) {
+            for (Campaña campaña: campañas) {
+                dtos.add(new CampañaDTO(campaña));
+            }
+        }
+        return dtos;
+    }
+
+    private List<OpcionDTO> convertirOpcionesADTO(List<Opcion> opciones) {
+        List<OpcionDTO> dtos = new ArrayList<OpcionDTO>();
+        if (opciones != null) {
+            for (Opcion opcion: opciones) {
+                dtos.add(new OpcionDTO(opcion));
+            }
+        }
+        return dtos;
+    }
+
+
 }

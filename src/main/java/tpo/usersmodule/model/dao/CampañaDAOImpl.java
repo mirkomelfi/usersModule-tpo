@@ -77,7 +77,7 @@ public class CampañaDAOImpl implements ICampañaDAO {
         Session currentSession = entityManager.unwrap(Session.class);
         boolean estado=true;
 
-        Query<Opcion> theQuery = currentSession.createQuery("FROM Opcion WHERE campaña=:id AND opcionGanadora=:estado", Opcion.class);
+        Query<Opcion> theQuery = currentSession.createQuery("FROM Opcion WHERE campaña.id=:id AND opcionGanadora=:estado", Opcion.class);
         theQuery.setParameter("estado", estado);
         theQuery.setParameter("id", id);
 

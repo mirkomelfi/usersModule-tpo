@@ -14,6 +14,8 @@ import java.util.List;
 public class CampañaServiceImpl {
     @Autowired
     private ICampañaDAO campañaDAO;
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
 
     public Campaña findById(int id) {
         Campaña campaña = campañaDAO.findById(id);
@@ -27,7 +29,7 @@ public class CampañaServiceImpl {
         if (opciones.size()!=0) {
             return opciones;
         }
-        throw new Error ("Las opciones no existen");
+        throw new Error ("Aun no finalizo la campaña");
     }
 
 
@@ -71,6 +73,48 @@ public class CampañaServiceImpl {
 
     }
 
+    // hacerme un metodo para traerme las campañas que ya voto y no voto
+
+    public void saveVoto(int idCampaña, int idOpcion, int dni) {
+
+        try {
+            Usuario usuario = usuarioDAO.findByDni(dni);
+            Campaña campaña = campañaDAO.findById(idCampaña);
+            System.out.println(usuario.getCampañasVotadas());
+            System.out.println(usuario.getCampañasVotadas().contains(campaña));
+            if (usuario.getCampañasVotadas().contains(campaña)) {
+                throw new Error("El usuario ya ha votado en esta campaña");
+            }
+
+            List<Opcion> opciones=campaña.getOpciones();
+            boolean opcionNotCorrect=true;
+            for (Opcion op : opciones){
+                if (op.getId()==idOpcion){
+                    op.setVotos(op.getVotos()+1);
+                    opcionNotCorrect=false;
+                }
+            }
+
+            if (opcionNotCorrect) {
+                throw new Error("Error interno: La opcion votada no pertenece a campaña seleccionada");
+            }else{
+
+                if (campaña.getEstado()){
+                    usuario.getCampañasVotadas().add(campaña);
+                    usuarioDAO.save(usuario);
+                }else{
+                    throw new Error("La campaña ya cerro. No puede votar.");
+
+                }
+            }
+
+
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+
     public void cerrarCampaña(int id) {
 
         try {
@@ -78,7 +122,7 @@ public class CampañaServiceImpl {
             Campaña c=campañaDAO.findById(id);
             //int cont=0;
             // busco cual es la opcion ganadora
-            Opcion ganadora= c.getOpciones().getFirst();
+            Opcion ganadora= c.getOpciones().get(0);
             for (Opcion op:c.getOpciones()){
                // if (op.getVotos()== ganadora.getVotos()&&op.getId()!= ganadora.getId()){
                 //    cont+=1;

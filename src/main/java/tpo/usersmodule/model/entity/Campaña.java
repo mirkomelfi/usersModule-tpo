@@ -20,9 +20,12 @@ public class Campaña {
     @OneToMany(mappedBy = "campaña", cascade = CascadeType.ALL)
 	List<Opcion> opciones;
 	boolean estado;
+    @ManyToMany(mappedBy = "campañasVotadas")
+    private List<Usuario> usuariosVotantes;
 
     public Campaña() {
         this.estado = true;
+        this.usuariosVotantes=new ArrayList<>();
     }
 
     public Campaña(int id, String titulo, String descripcion, List<Opcion> opciones, boolean estado) {
@@ -31,6 +34,7 @@ public class Campaña {
         this.descripcion = descripcion;
         this.opciones = opciones;
         this.estado = true;
+        this.usuariosVotantes=new ArrayList<>();
     }
 
     public int getId() {
@@ -65,11 +69,19 @@ public class Campaña {
         this.opciones = opciones;
     }
 
-    public boolean isEstado() {
+    public boolean getEstado() {
         return estado;
     }
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public List<Usuario> getUsuariosVotantes() {
+        return usuariosVotantes;
+    }
+
+    public void setUsuariosVotantes(List<Usuario> usuariosVotantes) {
+        this.usuariosVotantes = usuariosVotantes;
     }
 }

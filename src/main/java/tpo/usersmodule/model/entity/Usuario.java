@@ -3,6 +3,7 @@ package tpo.usersmodule.model.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,13 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaNacimiento;
 
-	//@OneToOne(cascade = CascadeType.ALL)
-	//private Agenda agenda;
+	@ManyToMany
+	@JoinTable(
+			name = "registro_campaña",
+			joinColumns = @JoinColumn(name = "dni"),
+			inverseJoinColumns = @JoinColumn(name = "idCampaña")
+	)
+	private List<Campaña> campañasVotadas;
 
 	@OneToMany(mappedBy = "usuarioSolicitante")
 	private List<Turno> turnosSolicitados;
@@ -36,6 +42,7 @@ public class Usuario {
 	public Usuario() {
 		super();
 		this.rol = "ROL_USER";
+		this.campañasVotadas=new ArrayList<>();
 	}
 
 	public Usuario(String username, String password, String nombre, String apellido, String rol, Direccion direccion, int dni, int telefono,LocalDate fechaNacimiento) {
@@ -48,6 +55,7 @@ public class Usuario {
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.telefono=telefono;
+		this.campañasVotadas=new ArrayList<>();
 	}
 
 	public String getUsername() {
@@ -136,5 +144,13 @@ public class Usuario {
 
 	public void setTurnosReservados(List<Turno> turnosReservados) {
 		this.turnosReservados = turnosReservados;
+	}
+
+	public List<Campaña> getCampañasVotadas() {
+		return campañasVotadas;
+	}
+
+	public void setCampañasVotadas(List<Campaña> campañasVotadas) {
+		this.campañasVotadas = campañasVotadas;
 	}
 }
