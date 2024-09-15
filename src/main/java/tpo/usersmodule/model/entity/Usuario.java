@@ -39,10 +39,18 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuarioReservado")
 	private List<Turno> turnosReservados;
 
+	@OneToMany(mappedBy = "usuario")
+	private List<Propuesta> propuestas;
+
+	@OneToMany(mappedBy = "usuario")
+	private List<Feedback> feedbacks;
+
 	public Usuario() {
 		super();
 		this.rol = "ROL_USER";
 		this.campañasVotadas=new ArrayList<>();
+		this.propuestas=new ArrayList<>();
+		this.feedbacks=new ArrayList<>();
 	}
 
 	public Usuario(String username, String password, String nombre, String apellido, String rol, Direccion direccion, int dni, int telefono,LocalDate fechaNacimiento) {
@@ -56,6 +64,8 @@ public class Usuario {
 		this.fechaNacimiento = fechaNacimiento;
 		this.telefono=telefono;
 		this.campañasVotadas=new ArrayList<>();
+		this.propuestas=new ArrayList<>();
+		this.feedbacks=new ArrayList<>();
 	}
 
 	public String getUsername() {
@@ -152,5 +162,21 @@ public class Usuario {
 
 	public void setCampañasVotadas(List<Campaña> campañasVotadas) {
 		this.campañasVotadas = campañasVotadas;
+	}
+
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
+	}
+
+	public List<Propuesta> getPropuestas() {
+		return propuestas;
+	}
+
+	public void setPropuestas(List<Propuesta> propuestas) {
+		this.propuestas = propuestas;
 	}
 }

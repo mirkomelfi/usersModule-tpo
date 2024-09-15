@@ -17,6 +17,9 @@ public class Imagen {
     private Noticia noticia;
     @ManyToOne
     private Actividad actividad;
+    @ManyToOne
+    private Propuesta propuesta;
+
 
     public Imagen() {
         super();
@@ -58,6 +61,14 @@ public class Imagen {
 
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
+    }
+
+    public Propuesta getPropuesta() {
+        return propuesta;
+    }
+
+    public void setPropuesta(Propuesta propuesta) {
+        this.propuesta = propuesta;
     }
 
     @Override

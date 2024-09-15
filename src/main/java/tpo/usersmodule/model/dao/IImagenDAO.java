@@ -10,6 +10,7 @@ public interface IImagenDAO {
 	public void save(Imagen imagen);
 
 	// x ahora no se usan
+	public List<Imagen> getImagenesPorPropuesta(int idProp);
 	public List<Imagen> getImagenesPorActividad(int idAct);
 	public List<Imagen> getImagenesPorNoticia(int idNoticia);
 }
