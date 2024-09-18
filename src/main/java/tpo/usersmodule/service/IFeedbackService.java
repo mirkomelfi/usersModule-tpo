@@ -12,8 +12,7 @@ public interface IFeedbackService {
     public Feedback findById(int id);
     public List<Feedback> findAll();
     List<Feedback> findByDni(int dni);
-    public int save(Feedback feedback);
-
+    public void save(int dni,Feedback feedback);
     public void deleteById(int id);
 
 }

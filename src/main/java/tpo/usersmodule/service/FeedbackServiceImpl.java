@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.IImagenDAO;
 import tpo.usersmodule.model.dao.IFeedbackDAO;
+import tpo.usersmodule.model.dao.IUsuarioDAO;
 import tpo.usersmodule.model.entity.Imagen;
 import tpo.usersmodule.model.entity.Feedback;
+import tpo.usersmodule.model.entity.Turno;
+import tpo.usersmodule.model.entity.Usuario;
 
 import java.util.List;
 
@@ -14,7 +17,7 @@ public class FeedbackServiceImpl implements IFeedbackService {
     @Autowired
     private IFeedbackDAO feedbackDAO;
     @Autowired
-    private IImagenDAO imgDAO;
+    private IUsuarioDAO usuarioDAO;
 
     @Override
     public Feedback findById(int id) {
@@ -48,16 +51,17 @@ public class FeedbackServiceImpl implements IFeedbackService {
     }
 
     @Override
-    public int save(Feedback feedback) {
+    public void save(int dni, Feedback f) {
 
         try {
-            int id=feedbackDAO.save(feedback);
-            System.out.print(id+" : id feedback");
-            return id;
+
+            Usuario u= usuarioDAO.findByDni(dni);
+            f.setUsuario(u);
+            feedbackDAO.save(f);
+
         } catch (Exception e) {
             throw new Error("Error interno en la BD");
         }
-
     }
 
     @Override

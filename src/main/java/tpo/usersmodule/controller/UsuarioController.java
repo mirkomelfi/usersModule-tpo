@@ -94,7 +94,8 @@ public class UsuarioController {
     }
 
 
-    @PreAuthorize("hasAuthority('ROL_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @CrossOrigin
     @GetMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> getUser(@PathVariable int userDni) {
         try {
@@ -124,7 +125,7 @@ public class UsuarioController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> updateUser(@PathVariable int userDni, @RequestBody Usuario user) {
