@@ -24,7 +24,7 @@ import java.util.List;
 public class NoticiaController {
     @Autowired
     private INoticiaService noticiaService;
-    
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/noticias")
     public ResponseEntity<?> getNoticias() {
@@ -39,7 +39,7 @@ public class NoticiaController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/noticias/{id}")
     public ResponseEntity<?> getNoticia(@PathVariable int id) {
@@ -70,7 +70,7 @@ public class NoticiaController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/noticias/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Noticia not) {
@@ -84,7 +84,7 @@ public class NoticiaController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/noticias/{id}")
     public ResponseEntity<?> deleteNoticia(@PathVariable int id) {
@@ -134,7 +134,7 @@ public class NoticiaController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @DeleteMapping("/admin/noticias/{idNoticia}/imagenes/{num}")
     public ResponseEntity<?> deleteImagen(@PathVariable int num, @PathVariable int idNoticia) {

@@ -38,11 +38,12 @@ public class ActividadServiceImpl implements IActividadService {
     }
 
     @Override
-    public void save(Actividad actividad) {
+    public int save(Actividad actividad) {
 
         try {
-            actividadDAO.save(actividad);
-            return;
+            int id=actividadDAO.save(actividad);
+
+            return id;
         } catch (Exception e) {
             throw new Error("Error interno en la BD");
         }

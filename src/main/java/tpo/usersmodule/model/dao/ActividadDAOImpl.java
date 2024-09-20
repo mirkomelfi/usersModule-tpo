@@ -24,9 +24,10 @@ public class ActividadDAOImpl implements IActividadDAO {
 
     @Override
     @Transactional
-    public void save(Actividad actividad) {
+    public int save(Actividad actividad) {
         Session currentSession = entityManager.unwrap(Session.class);
         currentSession.persist(actividad);
+        return actividad.getId();
     }
 
 

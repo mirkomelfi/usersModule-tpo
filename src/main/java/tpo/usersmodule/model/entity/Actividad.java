@@ -21,6 +21,8 @@ public class Actividad {
 	@OneToMany(mappedBy = "actividad", cascade = CascadeType.ALL)
 	List<Imagen> imagenes;
 	List<String> dias;
+	// List horarios
+	// float duracion
 	float valor;
 	String profesor;
 

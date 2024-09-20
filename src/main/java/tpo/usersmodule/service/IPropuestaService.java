@@ -11,7 +11,7 @@ public interface IPropuestaService {
     public Propuesta findById(int id);
     public List<Propuesta> findAll();
     List<Propuesta> findByDni(int dni);
-    public int save(Propuesta propuesta);
+    public int save(int dni,Propuesta propuesta);
     public void deleteById(int id);
 
     //Manejo de imagenes

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.IImagenDAO;
 import tpo.usersmodule.model.dao.IPropuestaDAO;
+import tpo.usersmodule.model.dao.IUsuarioDAO;
 import tpo.usersmodule.model.entity.Imagen;
 import tpo.usersmodule.model.entity.Propuesta;
+import tpo.usersmodule.model.entity.Usuario;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class PropuestaServiceImpl implements IPropuestaService {
     private IPropuestaDAO propuestaDAO;
     @Autowired
     private IImagenDAO imgDAO;
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
 
     @Override
     public Propuesta findById(int id) {
@@ -48,11 +52,12 @@ public class PropuestaServiceImpl implements IPropuestaService {
     }
 
     @Override
-    public int save(Propuesta propuesta) {
+    public int save(int dni,Propuesta p) {
 
         try {
-            int id=propuestaDAO.save(propuesta);
-            System.out.print(id+" : id propuesta");
+            Usuario u= usuarioDAO.findByDni(dni);
+            p.setUsuario(u);
+            int id=propuestaDAO.save(p);
             return id;
         } catch (Exception e) {
             throw new Error("Error interno en la BD");

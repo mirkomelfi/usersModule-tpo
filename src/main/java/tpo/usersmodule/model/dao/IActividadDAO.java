@@ -8,7 +8,7 @@ public interface IActividadDAO {
 
     public Actividad findById(int id);
     public List<Actividad> findAll();
-    public void save(Actividad actividad);
+    public int save(Actividad actividad);
     public void deleteById(int id) ;
 
 

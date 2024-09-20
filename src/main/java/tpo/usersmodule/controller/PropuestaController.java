@@ -1,39 +1,32 @@
 package tpo.usersmodule.controller;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tpo.usersmodule.controller.dtos.ActividadDTO;
 import tpo.usersmodule.controller.dtos.ImagenDTO;
-import tpo.usersmodule.model.entity.Actividad;
+import tpo.usersmodule.controller.dtos.PropuestaDTO;
 import tpo.usersmodule.model.entity.Imagen;
-import tpo.usersmodule.service.IActividadService;
+import tpo.usersmodule.model.entity.Propuesta;
+import tpo.usersmodule.service.IPropuestaService;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("")
-public class ActividadController {
+public class PropuestaController {
     @Autowired
-    private IActividadService actividadService;
-
-    @CrossOrigin
+    private IPropuestaService propuestaService;
+    
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/actividades")
-    public ResponseEntity<?> getActividades() {
+    @GetMapping("/propuestas")
+    public ResponseEntity<?> getPropuestas() {
         try {
-            List<Actividad> acts = actividadService.findAll();
-            List<ActividadDTO> dtos = convertirActsADTO(acts); // Xq sino vienen con el listado de imagenes y se arma un bucle infinito
+            List<Propuesta> nots = propuestaService.findAll();
+            List<PropuestaDTO> dtos = convertirPropuestasADTO(nots);
             return new ResponseEntity<>(dtos, HttpStatus.OK);
 
         } catch (Throwable e) {
@@ -42,14 +35,13 @@ public class ActividadController {
         }
 
     }
-    @CrossOrigin
-    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @GetMapping("/admin/actividades/{id}")
-    public ResponseEntity<?> getActividad(@PathVariable int id) {
-        try {
-            Actividad act = actividadService.findById(id);
-            ActividadDTO dto = new ActividadDTO(act); // Xq sino vienen con el listado de imagenes y se arma un bucle infinito
 
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @GetMapping("/propuestas/{id}")
+    public ResponseEntity<?> getPropuesta(@PathVariable int id) {
+        try {
+            Propuesta f = propuestaService.findById(id);
+            PropuestaDTO dto = new PropuestaDTO(f);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Throwable e) {
             String msj = e.getMessage();
@@ -57,16 +49,30 @@ public class ActividadController {
         }
 
     }
-    @CrossOrigin
+
+    @GetMapping("/propuestas/{dni}")
+    public ResponseEntity<?> getPropuestasByUser(@PathVariable int dni) {
+        try {
+            List<Propuesta> propuestas = propuestaService.findByDni(dni);
+            List<PropuestaDTO> dtos = convertirPropuestasADTO(propuestas);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @PostMapping("/admin/actividades")
-    public ResponseEntity<?> addActividad(@RequestBody Actividad act) {
+    @CrossOrigin
+    @PostMapping("/propuestas/{dni}")
+    public ResponseEntity<?> addPropuesta(@PathVariable int dni,@RequestBody Propuesta f) {
         String msj = "";
 
         try {
-            int id=actividadService.save(act);
-
-            msj = "Actividad guardada exitosamente";
+            int id=propuestaService.save(dni, f);
+            msj = "Propuesta guardado exitosamente";
             return new ResponseEntity<>(new Mensaje(msj,id), HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();
@@ -75,44 +81,30 @@ public class ActividadController {
 
     }
 
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @PutMapping("/admin/actividades/{id}")
-    public ResponseEntity<?> updateActividad(@PathVariable int id, @RequestBody Actividad act) {
+    @DeleteMapping("/admin/propuestas/{id}")
+    public ResponseEntity<?> deletePropuesta(@PathVariable int id) {
         String msj;
         try {
-            actividadService.update(id, act);
-            msj = "Actividad actualizada correctamente";
+            propuestaService.deleteById(id);
+            msj = "Propuesta eliminado correctamente";
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
-    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @DeleteMapping("/admin/actividades/{id}")
-    public ResponseEntity<?> deleteActividad(@PathVariable int id) {
-        String msj;
-        try {
-            actividadService.deleteById(id);
-            msj = "Actividad eliminada correctamente";
-            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
-        } catch (Throwable e) {
-            msj = e.getMessage();
-            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
-        }
-    }
-
 
     //Manejo de imagenes
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @PutMapping("/admin/actividades/{actividadId}/imagenes")
+    @PutMapping("/propuestas/{actividadId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int actividadId) {
         String msj;
         try {
             Imagen imagen = new Imagen(archivo.getBytes());
-            actividadService.saveImagen(imagen, actividadId);
+            propuestaService.saveImagen(imagen, actividadId);
             msj = "Imagen subida exitosamente.";
             return ResponseEntity.ok(new Mensaje(msj));
         } catch (IOException e) {
@@ -122,12 +114,12 @@ public class ActividadController {
     }
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/admin/actividades/{idActividad}/imagenes/{num}")
+    @GetMapping("/propuestas/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idActividad) {
         String msj;
         try {
             // El numero representa la posicion en el array de imagenes en el actividad
-            Imagen imagen = actividadService.findImagen(idActividad, num);
+            Imagen imagen = propuestaService.findImagen(idActividad, num);
             ImagenDTO dto = new ImagenDTO(imagen.getDatosImagen());
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (Throwable e) {
@@ -138,11 +130,11 @@ public class ActividadController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @DeleteMapping("/admin/actividades/{idActividad}/imagenes/{num}")
+    @DeleteMapping("/admin/propuestas/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> deleteImagen(@PathVariable int num, @PathVariable int idActividad) {
         String msj;
         try {
-            actividadService.deleteImagen(idActividad, num);
+            propuestaService.deleteImagen(idActividad, num);
             msj = "Imagen eliminada";
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
         } catch (Throwable e) {
@@ -152,28 +144,15 @@ public class ActividadController {
 
     }
 
-    //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    // Por ahora este no se usa
-    @GetMapping("/admin/actividades/{actividadID}/imagenes")
-    public ResponseEntity<?> getArchivos (@PathVariable int actividadID) throws IOException {
-
-        try {
-            List<Imagen> result = actividadService.findImagenes(actividadID);
-            return new ResponseEntity<>(result,HttpStatus.OK);
-        }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>(new Mensaje("No se encontraron imagenes."),HttpStatus.NOT_FOUND);
-        }
-        catch(Throwable e) {return new ResponseEntity<>(new Mensaje(e.getMessage()),HttpStatus.NOT_ACCEPTABLE);}
-    }
-
-    private List<ActividadDTO> convertirActsADTO(List<Actividad> acts) {
-        List<ActividadDTO> dtos = new ArrayList<ActividadDTO>();
-        if (acts != null) {
-            for (Actividad act: acts) {
-                dtos.add(new ActividadDTO(act));
+    private List<PropuestaDTO> convertirPropuestasADTO(List<Propuesta> propuestas) {
+        List<PropuestaDTO> dtos = new ArrayList<PropuestaDTO>();
+        if (propuestas != null) {
+            for (Propuesta propuesta: propuestas) {
+                dtos.add(new PropuestaDTO(propuesta));
             }
         }
         return dtos;
     }
-
+    
+    
 }
