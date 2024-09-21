@@ -11,6 +11,7 @@ public interface IActividadService {
     public Actividad findById(int id);
     public List<Actividad> findAll();
     public int save(Actividad actividad);
+    public void inscribirByDni(int id, int dni);
     public void update(int id, Actividad actividad);
     public void deleteById(int id);
 

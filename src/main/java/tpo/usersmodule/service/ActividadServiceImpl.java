@@ -5,8 +5,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.IActividadDAO;
 import tpo.usersmodule.model.dao.IImagenDAO;
+import tpo.usersmodule.model.dao.IUsuarioDAO;
 import tpo.usersmodule.model.entity.Actividad;
 import tpo.usersmodule.model.entity.Imagen;
+import tpo.usersmodule.model.entity.Usuario;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ public class ActividadServiceImpl implements IActividadService {
     private IActividadDAO actividadDAO;
     @Autowired
     private IImagenDAO imgDAO;
+    @Autowired
+    private IUsuarioDAO usuarioDAO;
 
     @Override
     public Actividad findById(int id) {
@@ -44,6 +48,25 @@ public class ActividadServiceImpl implements IActividadService {
             int id=actividadDAO.save(actividad);
 
             return id;
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+    @Override
+    public void inscribirByDni(int id, int dni) {
+
+        try {
+            Actividad act=this.findById(id);
+            Usuario u=usuarioDAO.findByDni(dni);
+            if (!u.getActividades().contains(act)){
+                u.getActividades().add(act);
+                usuarioDAO.save(u);
+            }
+            else{
+                throw new Error("Ya se encuentra inscripto");
+            }
+
         } catch (Exception e) {
             throw new Error("Error interno en la BD");
         }

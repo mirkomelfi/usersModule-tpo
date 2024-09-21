@@ -44,7 +44,7 @@ public class ActividadController {
     }
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @GetMapping("/admin/actividades/{id}")
+    @GetMapping("/actividades/{id}")
     public ResponseEntity<?> getActividad(@PathVariable int id) {
         try {
             Actividad act = actividadService.findById(id);
@@ -67,6 +67,24 @@ public class ActividadController {
             int id=actividadService.save(act);
 
             msj = "Actividad guardada exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj,id), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+    @CrossOrigin
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @PostMapping("/actividades/{id}/inscripciones/{dni}")
+    public ResponseEntity<?> addActividadToUser(@PathVariable int id,@PathVariable int dni) {
+        String msj = "";
+
+        try {
+            actividadService.inscribirByDni(id,dni);
+
+            msj = "Inscripcion exitosa";
             return new ResponseEntity<>(new Mensaje(msj,id), HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();

@@ -26,8 +26,11 @@ public class Actividad {
 	float valor;
 	String profesor;
 
+	@ManyToMany(mappedBy = "actividades")
+	private List<Usuario> usuarios;
 
-	public Actividad(int id, String nombre, String descripcion, List<String> dias, float valor, String profesor) {
+
+	public Actividad(int id, String nombre, String descripcion, List<String> dias, float valor, String profesor, Usuario usuario) {
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -35,11 +38,21 @@ public class Actividad {
 		this.valor = valor;
 		this.profesor = profesor;
 		this.imagenes = new ArrayList<Imagen>();
+		this.usuarios=new ArrayList<Usuario>();
 	}
 
 	public Actividad() {
 		this.imagenes = new ArrayList<Imagen>();
 		this.dias = new ArrayList<String>();
+		this.usuarios=new ArrayList<Usuario>();
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	public int getId() {

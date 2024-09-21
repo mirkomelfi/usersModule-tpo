@@ -19,11 +19,15 @@ public class Feedback {
 	LocalDate fechaPublicacion;
 	@ManyToOne
 	Usuario usuario;
-	public Feedback(int id, String descripcion, LocalDate fechaPublicacion, Usuario usuario) {
+	@ManyToOne
+	RubroFeedback rubro;
+
+	public Feedback(int id, String descripcion, LocalDate fechaPublicacion, Usuario usuario, RubroFeedback rubro) {
 		this.id = id;
 		this.descripcion = descripcion;
 		this.fechaPublicacion = LocalDate.now();
 		this.usuario=usuario;
+		this.rubro=rubro;
 	}
 
 	public Feedback() {
@@ -36,6 +40,14 @@ public class Feedback {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public RubroFeedback getRubro() {
+		return rubro;
+	}
+
+	public void setRubro(RubroFeedback rubro) {
+		this.rubro = rubro;
 	}
 
 	public String getDescripcion() {

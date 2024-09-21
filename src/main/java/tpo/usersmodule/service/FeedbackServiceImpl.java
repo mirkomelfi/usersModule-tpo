@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.IImagenDAO;
 import tpo.usersmodule.model.dao.IFeedbackDAO;
+import tpo.usersmodule.model.dao.IRubroFeedbackDAO;
 import tpo.usersmodule.model.dao.IUsuarioDAO;
-import tpo.usersmodule.model.entity.Imagen;
-import tpo.usersmodule.model.entity.Feedback;
-import tpo.usersmodule.model.entity.Turno;
-import tpo.usersmodule.model.entity.Usuario;
+import tpo.usersmodule.model.entity.*;
 
 import java.util.List;
 
@@ -16,6 +14,8 @@ import java.util.List;
 public class FeedbackServiceImpl implements IFeedbackService {
     @Autowired
     private IFeedbackDAO feedbackDAO;
+    @Autowired
+    private IRubroFeedbackDAO rubroDAO;
     @Autowired
     private IUsuarioDAO usuarioDAO;
 
@@ -51,12 +51,14 @@ public class FeedbackServiceImpl implements IFeedbackService {
     }
 
     @Override
-    public void save(int dni, Feedback f) {
+    public void save(int dni, Feedback f, int idRubro) {
 
         try {
 
             Usuario u= usuarioDAO.findByDni(dni);
             f.setUsuario(u);
+            RubroFeedback rubro= rubroDAO.findById(idRubro);
+            f.setRubro(rubro);
             feedbackDAO.save(f);
 
         } catch (Exception e) {
@@ -80,6 +82,42 @@ public class FeedbackServiceImpl implements IFeedbackService {
         feedbackDAO.deleteById(id);
 
     }
+
+    @Override
+    public void saveRubro(RubroFeedback r) {
+
+        try {
+
+            rubroDAO.save(r);
+
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+    }
+
+    @Override
+    public List<RubroFeedback> findRubros() {
+        List<RubroFeedback> rubros = rubroDAO.findAll();
+        if (rubros == null)
+            throw new Error("Error al buscar los datos (null)");
+        if (rubros.size() == 0)
+            throw new Error("No se encontraron feedbacks");
+        return rubros;
+    }
+
+    @Override
+    public void deleteRubroById(int id) {
+
+        try {
+            rubroDAO.deleteById(id);
+        } catch (Throwable e) {
+            throw new Error("Error al borrar el rubro " + id);
+        }
+
+
+    }
+
+
 
     
 }

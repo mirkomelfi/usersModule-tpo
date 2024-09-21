@@ -19,9 +19,6 @@ public class Turno {
 	@ManyToOne
 	private Usuario usuarioReservado;
 
-	//@ManyToOne
-	//private Agenda agenda;
-
 	public Turno() {
 	}
 

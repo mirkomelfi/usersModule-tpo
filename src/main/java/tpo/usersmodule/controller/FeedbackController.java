@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import tpo.usersmodule.controller.dtos.FeedbackDTO;
 
+import tpo.usersmodule.controller.dtos.RubroDTO;
 import tpo.usersmodule.model.entity.Feedback;
+import tpo.usersmodule.model.entity.RubroFeedback;
 import tpo.usersmodule.service.IFeedbackService;
 
 import java.util.ArrayList;
@@ -18,7 +20,39 @@ import java.util.List;
 public class FeedbackController {
     @Autowired
     private IFeedbackService feedbackService;
-    
+
+
+    @CrossOrigin
+    @GetMapping("/rubros")
+    public ResponseEntity<?> getRubros() {
+        try {
+            List<RubroFeedback> rubros = feedbackService.findRubros();
+            List<RubroDTO> dtos = convertirRubrosADTO(rubros);
+            return new ResponseEntity<>(dtos, HttpStatus.OK);
+
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @CrossOrigin
+    @PostMapping("/admin/rubros")
+    public ResponseEntity<?> addRubro(@RequestBody RubroFeedback r) {
+        String msj = "";
+
+        try {
+            feedbackService.saveRubro(r);
+            msj = "Rubro agregado exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/feedbacks")
     public ResponseEntity<?> getFeedbacks() {
@@ -64,12 +98,12 @@ public class FeedbackController {
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @CrossOrigin
-    @PostMapping("/feedbacks/{dni}")
-    public ResponseEntity<?> addFeedback(@PathVariable int dni,@RequestBody Feedback f) {
+    @PostMapping("/feedbacks/{dni}/rubro/{idRubro}")
+    public ResponseEntity<?> addFeedback(@PathVariable int dni,@RequestBody Feedback f,@PathVariable int idRubro) {
         String msj = "";
 
         try {
-            feedbackService.save(dni, f);
+            feedbackService.save(dni, f,idRubro);
             msj = "Feedback guardado exitosamente";
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
         } catch (Throwable e) {
@@ -104,6 +138,14 @@ public class FeedbackController {
         }
         return dtos;
     }
-    
+    private List<RubroDTO> convertirRubrosADTO(List<RubroFeedback> rubros) {
+        List<RubroDTO> dtos = new ArrayList<RubroDTO>();
+        if (rubros != null) {
+            for (RubroFeedback rubro: rubros) {
+                dtos.add(new RubroDTO(rubro));
+            }
+        }
+        return dtos;
+    }
     
 }

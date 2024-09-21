@@ -1,6 +1,7 @@
 package tpo.usersmodule.model.dao;
 
 import tpo.usersmodule.model.entity.Feedback;
+import tpo.usersmodule.model.entity.RubroFeedback;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public interface IFeedbackDAO {
     public List<Feedback> findAllByDni(int dni);
     public int save(Feedback feedback);
     public void deleteById(int id) ;
+
 
 
 }

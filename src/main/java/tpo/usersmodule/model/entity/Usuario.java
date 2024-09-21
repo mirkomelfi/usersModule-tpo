@@ -25,7 +25,7 @@ public class Usuario {
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaNacimiento;
 
-	@ManyToMany
+	@ManyToMany//(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "registro_campaña",
 			joinColumns = @JoinColumn(name = "dni"),
@@ -45,12 +45,21 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Feedback> feedbacks;
 
+
+	@ManyToMany//(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "registro_actividades",
+			joinColumns = @JoinColumn(name = "dni"),
+			inverseJoinColumns = @JoinColumn(name = "idActividad")
+	)
+	private List<Actividad> actividades;
 	public Usuario() {
 		super();
 		this.rol = "ROL_USER";
 		this.campañasVotadas=new ArrayList<>();
 		this.propuestas=new ArrayList<>();
 		this.feedbacks=new ArrayList<>();
+		this.actividades=new ArrayList<>();
 	}
 
 	public Usuario(String username, String password, String nombre, String apellido, String rol, Direccion direccion, int dni, int telefono,LocalDate fechaNacimiento) {
@@ -66,6 +75,7 @@ public class Usuario {
 		this.campañasVotadas=new ArrayList<>();
 		this.propuestas=new ArrayList<>();
 		this.feedbacks=new ArrayList<>();
+		this.actividades=new ArrayList<>();
 	}
 
 	public String getUsername() {
@@ -74,6 +84,14 @@ public class Usuario {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public List<Actividad> getActividades() {
+		return actividades;
+	}
+
+	public void setActividades(List<Actividad> actividades) {
+		this.actividades = actividades;
 	}
 
 	public String getPassword() {
