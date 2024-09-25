@@ -52,7 +52,7 @@ public class FeedbackController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/feedbacks")
     public ResponseEntity<?> getFeedbacks() {
@@ -67,7 +67,7 @@ public class FeedbackController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/feedbacks/{id}")
     public ResponseEntity<?> getFeedback(@PathVariable int id) {
@@ -81,7 +81,7 @@ public class FeedbackController {
         }
 
     }
-
+    @CrossOrigin
     @GetMapping("/feedbacks/{dni}")
     public ResponseEntity<?> getFeedbacksByUser(@PathVariable int dni) {
         try {

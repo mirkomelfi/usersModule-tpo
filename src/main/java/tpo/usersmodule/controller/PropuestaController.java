@@ -65,7 +65,7 @@ public class PropuestaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @CrossOrigin
+
     @PostMapping("/propuestas/{dni}")
     public ResponseEntity<?> addPropuesta(@PathVariable int dni,@RequestBody Propuesta f) {
         String msj = "";
@@ -97,7 +97,7 @@ public class PropuestaController {
     }
 
     //Manejo de imagenes
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @PutMapping("/propuestas/{actividadId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int actividadId) {
@@ -112,7 +112,7 @@ public class PropuestaController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/propuestas/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idActividad) {

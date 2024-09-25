@@ -21,7 +21,7 @@ public class CampañaController {
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
 
-    @CrossOrigin
+
     @GetMapping("/campañas/{id}")
     public ResponseEntity<?> getCampañaById(@PathVariable int id) {
         try {
@@ -35,7 +35,7 @@ public class CampañaController {
         }
 
     }
-    @CrossOrigin
+
     @GetMapping("/campañas")
     public ResponseEntity<?> getCampañas() {
         try {
@@ -50,7 +50,7 @@ public class CampañaController {
 
     }
 
-    @CrossOrigin
+
     @GetMapping("/campañasAbiertas")
     public ResponseEntity<?> getCampañasAbiertas() {
         try {
@@ -65,7 +65,7 @@ public class CampañaController {
 
     }
 
-    @CrossOrigin
+
     @GetMapping("/campañasCerradas")
     public ResponseEntity<?> getCampañasCerradas() {
         try {
@@ -80,7 +80,7 @@ public class CampañaController {
 
     }
 
-    @CrossOrigin
+
     @GetMapping("/campañas/{id}/cerrar")
     public ResponseEntity<?> getCerrarCampañaById(@PathVariable int id) {
         try {
@@ -94,7 +94,7 @@ public class CampañaController {
 
     }
 
-    @CrossOrigin
+
     @GetMapping("/campañas/{id}/ganador")
     public ResponseEntity<?> getGanadorById(@PathVariable int id) {
         try {
@@ -113,7 +113,7 @@ public class CampañaController {
 
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @CrossOrigin
+
     @PostMapping("/campañas")
     public ResponseEntity<?> addCampaña(@RequestBody Campaña campaña) {
         String msj = "";
@@ -130,7 +130,7 @@ public class CampañaController {
     }
 
 
-    @CrossOrigin
+
     @PutMapping("/campañas/{idCampaña}/votacion/{idOpcion}/usuario/{dni}")
     public ResponseEntity<?> addVoto(@PathVariable int idCampaña,@PathVariable int idOpcion,@PathVariable int dni) {
         String msj = "";

@@ -2,6 +2,7 @@ package tpo.usersmodule.controller;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import tpo.usersmodule.controller.dtos.CredencialesDTO;
 import tpo.usersmodule.controller.dtos.UsuarioDTO;
 import tpo.usersmodule.model.entity.Usuario;
 import tpo.usersmodule.service.IUsuarioService;
@@ -32,7 +33,7 @@ public class UsuarioController {
     // LOGIN
     @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDTO credentials) {
+    public ResponseEntity<?> login(@RequestBody CredencialesDTO credentials) {
         Usuario user;
         try {
             user = usuarioService.findUser(credentials.getUsername(), credentials.getPassword());
@@ -93,9 +94,8 @@ public class UsuarioController {
 
     }
 
-
-    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @CrossOrigin
+    //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> getUser(@PathVariable int userDni) {
         try {
@@ -108,7 +108,6 @@ public class UsuarioController {
         }
 
     }
-
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/admin/register")
@@ -139,7 +138,7 @@ public class UsuarioController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}/rol")
     public ResponseEntity<?> updateRol(@PathVariable int userDni, @RequestBody Usuario user) {
@@ -154,7 +153,7 @@ public class UsuarioController {
         }
     }
 
-
+    @CrossOrigin
    // @PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> deleteUser(@PathVariable int userDni) {
@@ -188,7 +187,7 @@ public class UsuarioController {
 
     @PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @PutMapping("/cambiarPerfil")
-    public ResponseEntity<?> updateLoggedUser(@RequestBody UsuarioDTO data) {
+    public ResponseEntity<?> updateLoggedUser(@RequestBody CredencialesDTO data) {
         try {
             Usuario user = new Usuario();
             user.setNombre(data.getNombre());

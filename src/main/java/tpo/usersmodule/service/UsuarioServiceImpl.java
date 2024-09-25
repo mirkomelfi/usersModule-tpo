@@ -180,6 +180,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     private Usuario doUpdates(Usuario data, Usuario u) {
+        if (data.getTelefono()!=0)
+            u.setTelefono(data.getTelefono());
+        if (data.getFechaNacimiento() != null)
+            u.setFechaNacimiento(data.getFechaNacimiento());
         if (data.getNombre() != null)
             u.setNombre(data.getNombre());
         if (data.getApellido() != null)

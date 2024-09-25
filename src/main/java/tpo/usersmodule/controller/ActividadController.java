@@ -27,7 +27,7 @@ public class ActividadController {
     @Autowired
     private IActividadService actividadService;
 
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/actividades")
     public ResponseEntity<?> getActividades() {
@@ -42,7 +42,7 @@ public class ActividadController {
         }
 
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/actividades/{id}")
     public ResponseEntity<?> getActividad(@PathVariable int id) {
@@ -57,7 +57,7 @@ public class ActividadController {
         }
 
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/admin/actividades")
     public ResponseEntity<?> addActividad(@RequestBody Actividad act) {
@@ -75,7 +75,7 @@ public class ActividadController {
 
     }
 
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/actividades/{id}/inscripciones/{dni}")
     public ResponseEntity<?> addActividadToUser(@PathVariable int id,@PathVariable int dni) {
@@ -123,7 +123,7 @@ public class ActividadController {
 
 
     //Manejo de imagenes
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @PutMapping("/admin/actividades/{actividadId}/imagenes")
     public ResponseEntity<?> addImagen(@RequestParam("archivo") MultipartFile archivo, @PathVariable int actividadId) {
@@ -138,7 +138,7 @@ public class ActividadController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/admin/actividades/{idActividad}/imagenes/{num}")
     public ResponseEntity<?> getImagenes(@PathVariable int num, @PathVariable int idActividad) {
