@@ -20,7 +20,7 @@ import java.util.List;
 public class PropuestaController {
     @Autowired
     private IPropuestaService propuestaService;
-    
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/propuestas")
     public ResponseEntity<?> getPropuestas() {
@@ -35,7 +35,7 @@ public class PropuestaController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/propuestas/{id}")
     public ResponseEntity<?> getPropuesta(@PathVariable int id) {
@@ -49,7 +49,7 @@ public class PropuestaController {
         }
 
     }
-
+    @CrossOrigin
     @GetMapping("/propuestas/{dni}")
     public ResponseEntity<?> getPropuestasByUser(@PathVariable int dni) {
         try {
@@ -65,7 +65,7 @@ public class PropuestaController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-
+    @CrossOrigin
     @PostMapping("/propuestas/{dni}")
     public ResponseEntity<?> addPropuesta(@PathVariable int dni,@RequestBody Propuesta f) {
         String msj = "";
@@ -81,7 +81,7 @@ public class PropuestaController {
 
     }
 
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/propuestas/{id}")
     public ResponseEntity<?> deletePropuesta(@PathVariable int id) {

@@ -21,8 +21,8 @@ public class CampañaController {
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
 
-
-    @GetMapping("/campañas/{id}")
+    @CrossOrigin
+    @GetMapping("/campanas/{id}")
     public ResponseEntity<?> getCampañaById(@PathVariable int id) {
         try {
             Campaña campaña = campañaService.findById(id);
@@ -35,8 +35,8 @@ public class CampañaController {
         }
 
     }
-
-    @GetMapping("/campañas")
+@CrossOrigin
+    @GetMapping("/campanas")
     public ResponseEntity<?> getCampañas() {
         try {
             List<Campaña> campañas = campañaService.findAll();
@@ -50,8 +50,8 @@ public class CampañaController {
 
     }
 
-
-    @GetMapping("/campañasAbiertas")
+    @CrossOrigin
+    @GetMapping("/campanasAbiertas")
     public ResponseEntity<?> getCampañasAbiertas() {
         try {
             List<Campaña> campañas = campañaService.findAbiertas();
@@ -65,8 +65,8 @@ public class CampañaController {
 
     }
 
-
-    @GetMapping("/campañasCerradas")
+    @CrossOrigin
+    @GetMapping("/campanasCerradas")
     public ResponseEntity<?> getCampañasCerradas() {
         try {
             List<Campaña> campañas = campañaService.findCerradas();
@@ -80,8 +80,8 @@ public class CampañaController {
 
     }
 
-
-    @GetMapping("/campañas/{id}/cerrar")
+    @CrossOrigin
+    @GetMapping("/campanas/{id}/cerrar")
     public ResponseEntity<?> getCerrarCampañaById(@PathVariable int id) {
         try {
             campañaService.cerrarCampaña(id);
@@ -94,8 +94,8 @@ public class CampañaController {
 
     }
 
-
-    @GetMapping("/campañas/{id}/ganador")
+    @CrossOrigin
+    @GetMapping("/campanas/{id}/ganador")
     public ResponseEntity<?> getGanadorById(@PathVariable int id) {
         try {
             List<Opcion> opciones = campañaService.findOpcionGanadoraById(id);
@@ -113,8 +113,8 @@ public class CampañaController {
 
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-
-    @PostMapping("/campañas")
+    @CrossOrigin
+    @PostMapping("/campanas")
     public ResponseEntity<?> addCampaña(@RequestBody Campaña campaña) {
         String msj = "";
 
@@ -130,8 +130,8 @@ public class CampañaController {
     }
 
 
-
-    @PutMapping("/campañas/{idCampaña}/votacion/{idOpcion}/usuario/{dni}")
+    @CrossOrigin
+    @PutMapping("/campanas/{idCampana}/votacion/{idOpcion}/usuario/{dni}")
     public ResponseEntity<?> addVoto(@PathVariable int idCampaña,@PathVariable int idOpcion,@PathVariable int dni) {
         String msj = "";
 
@@ -145,9 +145,9 @@ public class CampañaController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @DeleteMapping("/campañas/{id}")
+    @DeleteMapping("/campanas/{id}")
     public ResponseEntity<?> deleteCampaña(@PathVariable int id) {
         String msj;
         try {

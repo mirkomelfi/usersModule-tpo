@@ -13,6 +13,7 @@ public class CampañaDTO {
 	private int id;
 	String titulo;
 	String descripcion;
+	String estado;
 	List<OpcionDTO> opciones;
 
 
@@ -22,10 +23,23 @@ public class CampañaDTO {
 		this.titulo = campaña.getTitulo();
 		this.descripcion = campaña.getDescripcion();
 		this.opciones=convertirOpcionesADTO(campaña.getOpciones());
+		if (campaña.getEstado()){
+			this.estado="Abierta";
+		}else{
+			this.estado="Cerrada";
+		}
 	}
 
 	public CampañaDTO() {
 
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	public int getId() {

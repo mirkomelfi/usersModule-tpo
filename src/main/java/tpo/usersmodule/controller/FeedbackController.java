@@ -82,10 +82,10 @@ public class FeedbackController {
 
     }
     @CrossOrigin
-    @GetMapping("/feedbacks/{dni}")
-    public ResponseEntity<?> getFeedbacksByUser(@PathVariable int dni) {
+    @GetMapping("/misFeedbacks/{dni}")
+    public ResponseEntity<?> getFeedbacksByUser(@PathVariable int dni,@RequestParam int rubro) {
         try {
-            List<Feedback> feedbacks = feedbackService.findByDni(dni);
+            List<Feedback> feedbacks = feedbackService.findByDni(dni,rubro);
             List<FeedbackDTO> dtos = convertirFeedbacksADTO(feedbacks);
             return new ResponseEntity<>(dtos, HttpStatus.OK);
 

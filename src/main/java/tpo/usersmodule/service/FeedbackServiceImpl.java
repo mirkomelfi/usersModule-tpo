@@ -41,8 +41,8 @@ public class FeedbackServiceImpl implements IFeedbackService {
 
 
     @Override
-    public List<Feedback> findByDni(int dni) {
-        List<Feedback> feedbacks = feedbackDAO.findAllByDni(dni);
+    public List<Feedback> findByDni(int dni, int rubro) {
+        List<Feedback> feedbacks = feedbackDAO.findAllByDni(dni, rubro);
         if (feedbacks == null)
             throw new Error("Error al buscar los datos (null)");
         if (feedbacks.size() == 0)

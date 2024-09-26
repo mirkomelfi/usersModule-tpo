@@ -18,10 +18,10 @@ public class Opcion {
 	private Campaña campaña;
 	boolean opcionGanadora;
 
-	public Opcion(int id, String titulo, int votos, Campaña campaña, boolean opcionGanadora) {
+	public Opcion(int id, String titulo, Campaña campaña) {
 		this.id = id;
 		this.titulo = titulo;
-		this.votos = votos;
+		this.votos = 0;
 		this.campaña = campaña;
 		this.opcionGanadora = false;
 	}
