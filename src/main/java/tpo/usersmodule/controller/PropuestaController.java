@@ -22,7 +22,7 @@ public class PropuestaController {
     private IPropuestaService propuestaService;
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/propuestas")
+    @GetMapping("/admin/propuestas")
     public ResponseEntity<?> getPropuestas() {
         try {
             List<Propuesta> nots = propuestaService.findAll();
@@ -50,7 +50,7 @@ public class PropuestaController {
 
     }
     @CrossOrigin
-    @GetMapping("/propuestas/{dni}")
+    @GetMapping("/misPropuestas/{dni}")
     public ResponseEntity<?> getPropuestasByUser(@PathVariable int dni) {
         try {
             List<Propuesta> propuestas = propuestaService.findByDni(dni);

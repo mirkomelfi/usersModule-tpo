@@ -33,11 +33,15 @@ public class FeedbackDAOImpl implements IFeedbackDAO {
 
     @Override
     @Transactional
-    public List<Feedback> findAll() {
+    public List<Feedback> findAll(int idRubro) {
         Session currentSession = entityManager.unwrap(Session.class);
-        String query = "FROM Feedback";
-        List<Feedback> list = currentSession.createQuery(query, Feedback.class).getResultList();
-        return list;
+        List<Feedback> result;
+        if (idRubro==0){
+            result= currentSession.createQuery("FROM Feedback").getResultList();
+        }else{
+            result= currentSession.createQuery("FROM Feedback WHERE rubro.id=:rubroId ").setParameter("rubroId",idRubro).getResultList();
+        }
+        return result;
     }
 
     @Override

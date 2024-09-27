@@ -30,8 +30,8 @@ public class FeedbackServiceImpl implements IFeedbackService {
 
 
     @Override
-    public List<Feedback> findAll() {
-        List<Feedback> feedbacks = feedbackDAO.findAll();
+    public List<Feedback> findAll(int rubro) {
+        List<Feedback> feedbacks = feedbackDAO.findAll(rubro);
         if (feedbacks == null)
             throw new Error("Error al buscar los datos (null)");
         if (feedbacks.size() == 0)

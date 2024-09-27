@@ -54,10 +54,10 @@ public class FeedbackController {
     }
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-    @GetMapping("/feedbacks")
-    public ResponseEntity<?> getFeedbacks() {
+    @GetMapping("/admin/feedbacks")
+    public ResponseEntity<?> getFeedbacks(@RequestParam int rubro) {
         try {
-            List<Feedback> nots = feedbackService.findAll();
+            List<Feedback> nots = feedbackService.findAll(rubro);
             List<FeedbackDTO> dtos = convertirFeedbacksADTO(nots);
             return new ResponseEntity<>(dtos, HttpStatus.OK);
 
