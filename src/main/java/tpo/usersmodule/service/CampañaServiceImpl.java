@@ -148,6 +148,30 @@ public class CampañaServiceImpl {
     }
 
 
+    public void update(int idCampaña, Campaña campaña) {
+
+        try {
+            Campaña newCampaña = campañaDAO.findById(idCampaña);
+
+            List<Opcion> opciones=campaña.getOpciones();
+            if (campaña.getDescripcion()!=null){
+                newCampaña.setDescripcion(campaña.getDescripcion());
+            }
+            if (campaña.getTitulo()!=null){
+                newCampaña.setTitulo(campaña.getTitulo());
+            }
+            if (opciones.size()!=0){
+                newCampaña.setOpciones(opciones);
+            }
+
+            campañaDAO.save(newCampaña);
+
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+
     public void deleteById(int id) {
         Campaña campaña;
         try {

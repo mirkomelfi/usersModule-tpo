@@ -145,9 +145,25 @@ public class CampañaController {
         }
 
     }
+
+    @CrossOrigin
+    @PutMapping("/admin/campanas/{idCampaña}")
+    public ResponseEntity<?> update(@PathVariable int idCampaña, @RequestBody Campaña campaña) {
+        String msj = "";
+
+        try {
+            campañaService.update(idCampaña,campaña);
+            msj = "Campaña actualizada";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
     @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @DeleteMapping("/campanas/{id}")
+    @DeleteMapping("/admin/campanas/{id}")
     public ResponseEntity<?> deleteCampaña(@PathVariable int id) {
         String msj;
         try {
