@@ -114,7 +114,7 @@ public class CampañaController {
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @CrossOrigin
-    @PostMapping("/campanas")
+    @PostMapping("/admin/campanas")
     public ResponseEntity<?> addCampaña(@RequestBody Campaña campaña) {
         String msj = "";
 
@@ -131,7 +131,7 @@ public class CampañaController {
 
 
     @CrossOrigin
-    @PutMapping("/campanas/{idCampana}/votacion/{idOpcion}/usuario/{dni}")
+    @PutMapping("/campanas/{idCampaña}/votacion/{idOpcion}/usuario/{dni}")
     public ResponseEntity<?> addVoto(@PathVariable int idCampaña,@PathVariable int idOpcion,@PathVariable int dni) {
         String msj = "";
 

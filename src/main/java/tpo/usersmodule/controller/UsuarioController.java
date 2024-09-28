@@ -56,10 +56,10 @@ public class UsuarioController {
     }
 
 
-
+    @CrossOrigin
     // RUTAS DE ADMIN
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @GetMapping("/admin/usuarios")
+    @GetMapping("/admin/usuarios/nouso")
     public ResponseEntity<?> getUsers() {
         try {
             List<Usuario> users = usuarioService.findAll();
@@ -76,11 +76,16 @@ public class UsuarioController {
 
     }
     @CrossOrigin
-    @GetMapping("/usuarios/{rol}")
-    public ResponseEntity<?> getUsersByRol(@PathVariable String rol) {
+    @GetMapping("/admin/usuarios")
+    public ResponseEntity<?> getUsersByRol(@RequestParam String rol) {
         try {
-
-            List<Usuario> users = usuarioService.findByRol(rol);
+            List<Usuario> users;
+            System.out.println("controller: "+rol.contentEquals(""));
+            if (rol.contentEquals("")){
+                users = usuarioService.findAll();
+            }else{
+                users = usuarioService.findByRol(rol);
+            }
             List<UsuarioDTO> dtos = new ArrayList<UsuarioDTO>();
             for (Usuario u : users) {
                 dtos.add(new UsuarioDTO(u));

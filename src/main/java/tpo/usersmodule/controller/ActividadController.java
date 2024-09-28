@@ -27,7 +27,7 @@ public class ActividadController {
     @Autowired
     private IActividadService actividadService;
 
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/actividades")
     public ResponseEntity<?> getActividades() {
@@ -42,7 +42,7 @@ public class ActividadController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/actividades/{id}")
     public ResponseEntity<?> getActividad(@PathVariable int id) {
@@ -57,7 +57,7 @@ public class ActividadController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/admin/actividades")
     public ResponseEntity<?> addActividad(@RequestBody Actividad act) {
@@ -75,7 +75,7 @@ public class ActividadController {
 
     }
 
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/actividades/{id}/inscripciones/{dni}")
     public ResponseEntity<?> addActividadToUser(@PathVariable int id,@PathVariable int dni) {
@@ -92,7 +92,7 @@ public class ActividadController {
         }
 
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/actividades/{id}")
     public ResponseEntity<?> updateActividad(@PathVariable int id, @RequestBody Actividad act) {
@@ -106,7 +106,7 @@ public class ActividadController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/actividades/{id}")
     public ResponseEntity<?> deleteActividad(@PathVariable int id) {

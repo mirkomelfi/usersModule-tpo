@@ -100,11 +100,11 @@ public class ActividadServiceImpl implements IActividadService {
                     actividad.setDescripcion(data.getDescripcion());
                 if (data.getNombre() != null)
                     actividad.setNombre(data.getNombre());
-                if (data.getDias() != null)
+                if (data.getDias().size()!=0)
                     actividad.setDias(data.getDias());
                 if (data.getProfesor() != null)
                     actividad.setProfesor(data.getProfesor());
-                if (!Float.isNaN(data.getValor()))
+                if (data.getValor()!=0)
                     actividad.setValor(data.getValor());
                 actividadDAO.save(actividad);
             } else {
