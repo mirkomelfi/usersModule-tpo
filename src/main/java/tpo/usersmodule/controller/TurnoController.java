@@ -22,7 +22,7 @@ public class TurnoController {
     private TurnoServiceImpl turnoService;
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
-
+    @CrossOrigin
     @GetMapping("/turnos/{dni}")
     public ResponseEntity<?> getTurnos(@PathVariable int dni) {
         try {
@@ -39,7 +39,7 @@ public class TurnoController {
 
     
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-
+@CrossOrigin
     @PostMapping("/turnos/{dniSolicitante}/{dniSolicitado}")
     public ResponseEntity<?> addTurno(@PathVariable int dniSolicitante, @PathVariable int dniSolicitado,@RequestBody Turno turno) {
         String msj = "";
@@ -55,7 +55,7 @@ public class TurnoController {
 
     }
 
-
+    @CrossOrigin
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/turnos/{id}")
     public ResponseEntity<?> deleteTurno(@PathVariable int id) {

@@ -2,6 +2,7 @@ package tpo.usersmodule.service;
 
 //import tpo.usersmodule.config.JwtAuthFilter;
 import tpo.usersmodule.model.dao.IUsuarioDAO;
+import tpo.usersmodule.model.entity.Direccion;
 import tpo.usersmodule.model.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -180,8 +181,17 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     private Usuario doUpdates(Usuario data, Usuario u) {
+        Direccion dir=new Direccion();
         if (data.getTelefono()!=0)
             u.setTelefono(data.getTelefono());
+        if (data.getDireccion().getCalle()!=null)
+            dir.setCalle(data.getDireccion().getCalle());
+        if (data.getDireccion().getNumero()!=0)
+            dir.setNumero(data.getDireccion().getNumero());
+        if (data.getDireccion().getCodPostal()!=0)
+            dir.setCodPostal(data.getDireccion().getCodPostal());
+        if (data.getDireccion().getCiudad()!=null)
+            dir.setCiudad(data.getDireccion().getCiudad());
         if (data.getFechaNacimiento() != null)
             u.setFechaNacimiento(data.getFechaNacimiento());
         if (data.getNombre() != null)
@@ -197,6 +207,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             u.setPassword(passwordEncoder.encode(data.getPassword()));
         }
+        u.setDireccion(dir);
         return u;
 
     }
