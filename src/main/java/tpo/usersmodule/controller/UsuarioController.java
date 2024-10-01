@@ -23,7 +23,7 @@ public class UsuarioController {
     @Autowired
     private IUsuarioService usuarioService;
 
-    private final int EXPIRATION_TIME_IN_MIN = 10; // En 10 mins expira el token
+    private final int EXPIRATION_TIME_IN_MIN = 60; // En 60 mins expira el token
 
 
     @Autowired
@@ -44,6 +44,7 @@ public class UsuarioController {
         // Crear el token JWT
         String token = Jwts.builder().setSubject(credentials.getUsername()).
                 claim("rol", user.getRol())
+                .claim("dni", user.getDni())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MIN * 60 * 1000))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -56,7 +57,7 @@ public class UsuarioController {
     }
 
 
-    @CrossOrigin
+
     // RUTAS DE ADMIN
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @GetMapping("/admin/usuarios/nouso")
@@ -75,7 +76,7 @@ public class UsuarioController {
         }
 
     }
-    @CrossOrigin
+
     @GetMapping("/admin/usuarios")
     public ResponseEntity<?> getUsersByRol(@RequestParam String rol) {
         try {
@@ -99,9 +100,9 @@ public class UsuarioController {
 
     }
 
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
-    @GetMapping("/admin/usuarios/{userDni}")
+    @GetMapping("/usuarios/{userDni}")
     public ResponseEntity<?> getUser(@PathVariable int userDni) {
         try {
             Usuario user = usuarioService.findByDni(userDni);
@@ -113,7 +114,7 @@ public class UsuarioController {
         }
 
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PostMapping("/admin/register")
     public ResponseEntity<?> addUser(@RequestBody Usuario user) {
@@ -129,7 +130,7 @@ public class UsuarioController {
         }
 
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> updateUser(@PathVariable int userDni, @RequestBody Usuario user) {
@@ -143,7 +144,7 @@ public class UsuarioController {
             return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-    @CrossOrigin
+
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}/rol")
     public ResponseEntity<?> updateRol(@PathVariable int userDni, @RequestBody Usuario user) {
@@ -158,7 +159,7 @@ public class UsuarioController {
         }
     }
 
-    @CrossOrigin
+
    // @PreAuthorize("hasAuthority('ROL_ADMIN')")
     @DeleteMapping("/admin/usuarios/{userDni}")
     public ResponseEntity<?> deleteUser(@PathVariable int userDni) {
@@ -177,7 +178,7 @@ public class UsuarioController {
 
     // RUTAS PARA USUARIOS NORMALES
 
-    @PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @GetMapping("/miPerfil")
     public ResponseEntity<?> getLoggedUser() {
         try {

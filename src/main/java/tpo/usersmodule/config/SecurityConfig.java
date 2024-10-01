@@ -20,7 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-/*
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -52,7 +52,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("login");
+		return (web) -> web.ignoring().requestMatchers("/login","/actividades","/noticias");
 	}
 
 	@Bean
@@ -74,8 +74,8 @@ public class SecurityConfig {
 	}
 }
 
-*/
 
+/*
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig {
@@ -120,4 +120,4 @@ public class SecurityConfig {
 
 		return secretKey;
 	}
-}
+}*/
