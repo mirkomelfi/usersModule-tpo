@@ -182,16 +182,31 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     private Usuario doUpdates(Usuario data, Usuario u) {
         Direccion dir=new Direccion();
+        u.getDireccion().getCiudad();
+
+
+
+        u.getDireccion().getNumero();
+
+        u.getDireccion().getCodPostal();
         if (data.getTelefono()!=0)
             u.setTelefono(data.getTelefono());
         if (data.getDireccion().getCalle()!=null)
             dir.setCalle(data.getDireccion().getCalle());
+        else
+            dir.setCalle(u.getDireccion().getCalle());
         if (data.getDireccion().getNumero()!=0)
             dir.setNumero(data.getDireccion().getNumero());
+        else
+            dir.setNumero(u.getDireccion().getNumero());
         if (data.getDireccion().getCodPostal()!=0)
             dir.setCodPostal(data.getDireccion().getCodPostal());
+        else
+            dir.setCodPostal(u.getDireccion().getCodPostal());
         if (data.getDireccion().getCiudad()!=null)
             dir.setCiudad(data.getDireccion().getCiudad());
+        else
+            dir.setCiudad(u.getDireccion().getCalle());
         if (data.getFechaNacimiento() != null)
             u.setFechaNacimiento(data.getFechaNacimiento());
         if (data.getNombre() != null)

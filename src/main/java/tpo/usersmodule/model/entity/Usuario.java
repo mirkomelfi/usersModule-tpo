@@ -9,13 +9,16 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios",uniqueConstraints = { @UniqueConstraint(columnNames = { "username"}) })
 public class Usuario {
+	@Column(nullable = false)
 	@Id
 	int dni;
 	@Column(nullable = false)
 	String username;
 	@Column(nullable = false)
 	String password;
+	@Column(nullable = false)
 	String nombre;
+	@Column(nullable = false)
 	String apellido;
 	String rol;
 	//String email;
@@ -55,7 +58,7 @@ public class Usuario {
 	private List<Actividad> actividades;
 	public Usuario() {
 		super();
-		this.rol = "ROL_USER";
+		this.rol = "Cliente";
 		this.campañasVotadas=new ArrayList<>();
 		this.propuestas=new ArrayList<>();
 		this.feedbacks=new ArrayList<>();
@@ -67,7 +70,11 @@ public class Usuario {
 		this.password = password;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		this.rol = rol;
+		if (rol.contentEquals("")||rol.contentEquals(" ")||rol.contentEquals("null")) {
+			this.rol = rol;
+		} else {
+			this.rol = "Cliente";
+		}
 		this.direccion = direccion;
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;

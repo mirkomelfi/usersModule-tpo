@@ -130,6 +130,21 @@ public class UsuarioController {
         }
 
     }
+    @CrossOrigin
+    @PostMapping("/register")
+    public ResponseEntity<?> createAccount(@RequestBody Usuario user) {
+        String msj = "";
+
+        try {
+            usuarioService.save(user);
+            msj = "Usuario guardado exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
     @PutMapping("/admin/usuarios/{userDni}")
