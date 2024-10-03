@@ -87,12 +87,6 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
     @Transactional
     public void deleteByDni(int dni) {
         Session currentSession = entityManager.unwrap(Session.class);
-        Query updateInqulinos = currentSession.createQuery("update Unidad set inquilino = null where inquilino.dni=:dniUser");
-        updateInqulinos.setParameter("dniUser", dni);
-        updateInqulinos.executeUpdate();
-        Query updatePropietarios = currentSession.createQuery("update Unidad set propietario = null where propietario.dni=:dniUser");
-        updatePropietarios.setParameter("dniUser", dni);
-        updatePropietarios.executeUpdate();
         Usuario usr = this.findByDni(dni);
         currentSession.remove(usr);
     }

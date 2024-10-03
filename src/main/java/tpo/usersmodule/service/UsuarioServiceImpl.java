@@ -106,7 +106,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (user == null) {
             throw new Error("El usuario ingresado no existe");
         }
-        if (user.getRol().contentEquals("ROL_ADMIN")) {
+        if (user.getRol().contentEquals("ADMIN")) {
             throw new Error("No pueden eliminarse usuarios ADMIN");
         }
         usuarioDAO.deleteByDni(dni);
