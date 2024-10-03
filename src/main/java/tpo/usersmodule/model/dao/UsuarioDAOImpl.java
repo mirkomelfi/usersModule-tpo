@@ -67,6 +67,7 @@ public class UsuarioDAOImpl implements IUsuarioDAO {
     @Override
     @Transactional
     public void save(Usuario user) {
+        System.out.println(user.toString());
         Session currentSession = entityManager.unwrap(Session.class);
         currentSession.persist(user);
     }

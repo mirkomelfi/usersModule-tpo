@@ -182,13 +182,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     private Usuario doUpdates(Usuario data, Usuario u) {
         Direccion dir=new Direccion();
-        u.getDireccion().getCiudad();
 
-
-
-        u.getDireccion().getNumero();
-
-        u.getDireccion().getCodPostal();
         if (data.getTelefono()!=0)
             u.setTelefono(data.getTelefono());
         if (data.getDireccion().getCalle()!=null)

@@ -63,9 +63,11 @@ public class Usuario {
 		this.propuestas=new ArrayList<>();
 		this.feedbacks=new ArrayList<>();
 		this.actividades=new ArrayList<>();
+		this.direccion=new Direccion();
 	}
 
 	public Usuario(String username, String password, String nombre, String apellido, String rol, Direccion direccion, int dni, int telefono,LocalDate fechaNacimiento) {
+
 		this.username = username;
 		this.password = password;
 		this.nombre = nombre;
@@ -75,7 +77,11 @@ public class Usuario {
 		} else {
 			this.rol = "Cliente";
 		}
-		this.direccion = direccion;
+		if (direccion!=null){
+			this.direccion = direccion;
+		}else{
+			this.direccion=new Direccion();
+		}
 		this.dni = dni;
 		this.fechaNacimiento = fechaNacimiento;
 		this.telefono=telefono;
@@ -203,5 +209,17 @@ public class Usuario {
 
 	public void setPropuestas(List<Propuesta> propuestas) {
 		this.propuestas = propuestas;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario{" +
+				"dni=" + dni +
+				", username='" + username + '\'' +
+				", password='" + password + '\'' +
+				", nombre='" + nombre + '\'' +
+				", apellido='" + apellido + '\'' +
+				", rol='" + rol + '\'' +
+				'}';
 	}
 }
