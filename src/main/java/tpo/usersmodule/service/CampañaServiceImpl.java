@@ -64,6 +64,9 @@ public class CampañaServiceImpl {
     public void save(Campaña campaña) {
 
         try {
+            if (campaña.getOpciones().size()<=1){
+                throw new Error("Debe cargar al menos 2 opciones para la campaña");
+            }
             campaña.getOpciones().forEach(opcion -> opcion.setCampaña(campaña));
             campañaDAO.save(campaña);
             return;
