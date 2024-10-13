@@ -36,13 +36,14 @@ public class UsuarioController {
     public ResponseEntity<?> login(@RequestBody CredencialesDTO credentials) {
         Usuario user;
         try {
-            user = usuarioService.findUser(credentials.getUsername(), credentials.getPassword());
+
+            user = usuarioService.findUser(credentials.getDni(), credentials.getPassword());
 
         } catch (Throwable e) {
             return new ResponseEntity<>(new Mensaje(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
         // Crear el token JWT
-        String token = Jwts.builder().setSubject(credentials.getUsername()).
+        String token = Jwts.builder().setSubject(user.getUsername()).
                 claim("rol", user.getRol())
                 .claim("dni", user.getDni())
                 .setIssuedAt(new Date())

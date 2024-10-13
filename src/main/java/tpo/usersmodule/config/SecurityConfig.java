@@ -31,7 +31,7 @@ public class SecurityConfig {
 		  http
           .cors(httpSecurityCorsConfigurer -> {
               CorsConfiguration configuration = new CorsConfiguration();
-              configuration.setAllowedOrigins(Arrays.asList("https://main.d220bqspbr415z.amplifyapp.com/"));
+              configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
               configuration.setAllowedMethods(Arrays.asList("*"));
               configuration.setAllowedHeaders(Arrays.asList("*"));
               configuration.setAllowCredentials(true);

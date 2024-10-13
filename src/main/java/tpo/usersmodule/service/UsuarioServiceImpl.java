@@ -31,16 +31,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public Usuario findUser(String username, String password) {
+    public Usuario findUser(int dni, String password) {
         Usuario user = null;
         try {
-            user = usuarioDAO.findByUsername(username);
+            user = usuarioDAO.findByDni(dni);
 
         } catch (Throwable e) {
             throw new Error("Ocurrio un problema al buscar el usuario");
         }
         if (user == null)
-            throw new Error /*NotFoundError*/("No existe ningun usuario con username:" + username);
+            throw new Error /*NotFoundError*/("No existe ningun usuario con username:" + dni);
         if (checkPassword(password, user.getPassword())) {
             return user;
         }

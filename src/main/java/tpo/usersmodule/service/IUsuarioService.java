@@ -20,7 +20,7 @@ public interface IUsuarioService {
     public void deleteByDni(int dni);
 
     // NO SE SI HACEN FALTA
-    public Usuario findUser(String username, String password);
+    public Usuario findUser(int dni, String password);
     public Usuario findByUsername(String username);
     public List<Usuario> findByRol(String rol);
     public Usuario findLogged();
