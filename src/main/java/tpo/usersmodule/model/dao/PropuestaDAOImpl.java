@@ -48,6 +48,8 @@ public class PropuestaDAOImpl implements IPropuestaDAO {
         List<Propuesta> result;
         Session currentSession = entityManager.unwrap(Session.class);
         result= currentSession.createQuery("FROM Propuesta WHERE usuario.dni = :dni").setParameter("dni",dni).getResultList();
+        System.out.println(dni);
+        System.out.println(result);
         return result;
 
     }

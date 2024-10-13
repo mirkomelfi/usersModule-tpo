@@ -30,6 +30,7 @@ public class Propuesta {
 		this.descripcion = descripcion;
 		this.fechaPublicacion = LocalDate.now();
 		this.imagenes = new ArrayList<Imagen>();
+		this.usuario=usuario;
 	}
 
 	public Propuesta() {

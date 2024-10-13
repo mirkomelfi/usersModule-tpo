@@ -9,7 +9,7 @@ public class PropuestaDTO {
 	private int id;
 	String titulo;
 	String descripcion;
-
+	int dni;
 	LocalDate fechaPublicacion;
 
 
@@ -18,6 +18,7 @@ public class PropuestaDTO {
 		this.titulo = propuesta.getTitulo();
 		this.descripcion = propuesta.getDescripcion();
 		this.fechaPublicacion = propuesta.getFechaPublicacion();
+		this.dni=propuesta.getUsuario().getDni();
 	}
 
 	public PropuestaDTO() {
@@ -50,6 +51,14 @@ public class PropuestaDTO {
 
 	public LocalDate getFechaPublicacion() {
 		return fechaPublicacion;
+	}
+
+	public int getDni() {
+		return dni;
+	}
+
+	public void setDni(int dni) {
+		this.dni = dni;
 	}
 
 	public void setFechaPublicacion(LocalDate fechaPublicacion) {
