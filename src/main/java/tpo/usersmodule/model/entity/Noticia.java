@@ -22,7 +22,7 @@ public class Noticia {
 	@Temporal(TemporalType.DATE)
 	LocalDate fechaPublicacion;
 
-	public Noticia(int id, String titulo, String descripcion, LocalDate fechaPublicacion) {
+	public Noticia(int id, String titulo, String descripcion) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
