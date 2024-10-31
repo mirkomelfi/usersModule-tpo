@@ -31,7 +31,7 @@ public class SecurityConfig {
 		  http
           .cors(httpSecurityCorsConfigurer -> {
               CorsConfiguration configuration = new CorsConfiguration();
-              configuration.setAllowedOrigins(Arrays.asList("https://main.d220bqspbr415z.amplifyapp.com/"));
+              configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000/"));
               configuration.setAllowedMethods(Arrays.asList("*"));
               configuration.setAllowedHeaders(Arrays.asList("*"));
               configuration.setAllowCredentials(true);
@@ -52,7 +52,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/login","/actividades","/noticias","/register","/historia","/autoridades");
+		return (web) -> web.ignoring().requestMatchers("/login","/actividades","/noticias","/register","/historia","/autoridades","/productosUpdate","/finalizarCarrito","/misPedidos","/productos","/ventas");
 	}
 
 	@Bean

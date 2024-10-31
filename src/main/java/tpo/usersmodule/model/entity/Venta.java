@@ -1,27 +1,35 @@
 package tpo.usersmodule.model.entity;
+import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name = "ventas")
 public class Venta {
-
+    @Id
+    @Column(name ="id_venta")
     private long idVenta;
     private String nombreUsuario;
     private Date fecha;
     private double montoTotal;
     private Integer cantidadDeProductos;
+    @ElementCollection
     private List<Integer> productos;
+    private String estado;
+
 
     public Venta() {
     }
 
-    public Venta(long idVenta, String nombreUsuario, Date fecha, double montoTotal, Integer cantidadDeProductos, List<Integer> productos) {
+    public Venta(long idVenta, String nombreUsuario, Date fecha, double montoTotal, String estado, Integer cantidadDeProductos, List<Integer> productos) {
         this.idVenta = idVenta;
         this.nombreUsuario = nombreUsuario;
         this.fecha = fecha;
         this.montoTotal = montoTotal;
         this.cantidadDeProductos = cantidadDeProductos;
         this.productos = productos;
+        this.estado=estado;
     }
 
     public long getIdVenta() {
@@ -38,6 +46,14 @@ public class Venta {
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getFecha() {

@@ -113,7 +113,7 @@
         <dependency>
             <groupId>io.github.matiasfelau</groupId>
             <artifactId>sender-java</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.3</version>
         </dependency>
 
     </dependencies>
