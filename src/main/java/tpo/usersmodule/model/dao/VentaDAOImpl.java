@@ -31,18 +31,18 @@ public class VentaDAOImpl {
 
 
     @Transactional
-    public List<Venta> findAll() {
+    public List<Venta> findAll(String username) {
         Session currentSession = entityManager.unwrap(Session.class);
-        String query = "FROM Venta";
-        List<Venta> list = currentSession.createQuery(query, Venta.class).getResultList();
+        String query = "FROM Venta where nombreUsuario=:username";
+        List<Venta> list = currentSession.createQuery(query, Venta.class).setParameter("username",username).getResultList();
         return list;
     }
 
 
     @Transactional
-    public void deleteAll() {
+    public void deleteAll(String username) {
         Session currentSession = entityManager.unwrap(Session.class);
-        currentSession.createQuery("DELETE FROM Venta where idVenta>0").executeUpdate();
+        currentSession.createQuery("DELETE FROM Venta where nombreUsuario=:username").setParameter("username",username).executeUpdate();
     }
 
 }

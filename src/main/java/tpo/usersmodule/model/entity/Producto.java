@@ -3,10 +3,7 @@ package tpo.usersmodule.model.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "productos")
@@ -22,12 +19,13 @@ public class Producto {
     private Float descuentoSocios;
     private Float descuentoNoSocios;
     private String categoria;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> caracteristicas;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String>talles;
 
     public Producto() {
+        this.caracteristicas=new HashSet<>();
     }
 
     public Producto(long idProducto, String nombre, String descripcion, Double precioVenta, Integer stockActual, Float descuentoEfectivo, Float descuentoSocios, Float descuentoNoSocios, String categoria, Set<String> caracteristicas, Set<String> talles) {
@@ -130,5 +128,22 @@ public class Producto {
 
     public void setTalles(Set<String> talles) {
         this.talles = talles;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "idProducto=" + idProducto +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", precioVenta=" + precioVenta +
+                ", stockActual=" + stockActual +
+                ", descuentoEfectivo=" + descuentoEfectivo +
+                ", descuentoSocios=" + descuentoSocios +
+                ", descuentoNoSocios=" + descuentoNoSocios +
+                ", categoria='" + categoria + '\'' +
+                ", caracteristicas=" + caracteristicas +
+                ", talles=" + talles +
+                '}';
     }
 }

@@ -20,7 +20,7 @@ public class CommerceServiceImpl {
     @Autowired
     private VentaDAOImpl ventaDAO;
 
-    public Producto findProductoById(int id) {
+    public Producto findProductoById(long id) {
         Producto producto = productoDAO.findById(id);
         if (producto != null) {
             return producto;
@@ -45,8 +45,8 @@ public class CommerceServiceImpl {
         throw new Error ("La venta no existe");
     }
 
-    public List<Venta> findAllVentas() {
-        List<Venta> ventas = ventaDAO.findAll();
+    public List<Venta> findAllVentas(String username) {
+        List<Venta> ventas = ventaDAO.findAll(username);
         if (ventas == null)
             throw new Error("Error al buscar los datos (null)");
         if (ventas.size() == 0)
@@ -55,6 +55,30 @@ public class CommerceServiceImpl {
     }
 
 
-    
-    
-}
+    public void updateAll(List<Producto> productos) {
+        for (Producto producto : productos){
+            System.out.println(producto.toString());
+                Producto p=productoDAO.getById(producto.getIdProducto());
+                if (p!=null){
+                System.out.print(producto.getCaracteristicas());
+                if (!producto.getCaracteristicas().isEmpty())p.setCaracteristicas(producto.getCaracteristicas());
+                p.setCategoria(producto.getCategoria());
+                p.setDescripcion(producto.getDescripcion());
+                p.setNombre(producto.getNombre());
+                if (!producto.getTalles().isEmpty())p.setTalles(producto.getTalles());
+                p.setDescuentoEfectivo(producto.getDescuentoEfectivo());
+                p.setDescuentoSocios(producto.getDescuentoSocios());
+                p.setDescuentoNoSocios(producto.getDescuentoNoSocios());
+                p.setPrecioVenta(producto.getPrecioVenta());
+                p.setStockActual(producto.getStockActual());
+                productoDAO.saveNew(p);
+                }else{
+                    productoDAO.saveNew(producto);
+                }
+            }
+        }
+    }
+
+
+
+

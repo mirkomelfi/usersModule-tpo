@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tpo.usersmodule.controller.dtos.ActividadDTO;
 import tpo.usersmodule.controller.dtos.UsuarioDTO;
+import tpo.usersmodule.model.entity.Actividad;
 import tpo.usersmodule.model.entity.Producto;
 import tpo.usersmodule.model.entity.Usuario;
 import tpo.usersmodule.model.entity.Venta;
@@ -49,7 +51,7 @@ public class CommerceController {
             venta.setFecha(new Date());
             venta.setCantidadDeProductos(venta.getProductos().size());
 
-            publisher.publish(publisherConnection, Utilities.convertClass(venta), Modules.E_COMMERCE, "Venta", "token", Types.JSON,"Venta");
+            publisher.publish(publisherConnection, Utilities.convertClass(venta), Modules.E_COMMERCE, "Venta", "token", Types.JSON,"Venta","600");
 
             broker.endConnection(publisherConnection);
 
@@ -79,7 +81,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, null, Modules.E_COMMERCE, "Productos", "token", Types.JSON,null);
+            publisher.publish(publisherConnection, null, Modules.E_COMMERCE, "Productos", "token", Types.JSON,null,"600");
 
             broker.endConnection(publisherConnection);
 
@@ -91,7 +93,19 @@ public class CommerceController {
         }
 
     }
+    @CrossOrigin
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<?> getProducto(@PathVariable int id) {
+        try {
+            Producto producto = commerceService.findProductoById(id);
+            System.out.print(producto);
+            return new ResponseEntity<>(producto, HttpStatus.OK);
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
 
+    }
     @CrossOrigin
     @GetMapping("/misPedidos")
     public ResponseEntity<?> getPedidosCore(@RequestParam String username) {
@@ -112,7 +126,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, username, Modules.E_COMMERCE, "Pedidos", "token", Types.JSON,null);
+            publisher.publish(publisherConnection, username, Modules.E_COMMERCE, "Pedidos", "token", Types.JSON,null,"600");
 
             broker.endConnection(publisherConnection);
 
@@ -143,11 +157,11 @@ public class CommerceController {
 
     @CrossOrigin
     @GetMapping("/ventas")
-    public ResponseEntity<?> getVentas() {
+    public ResponseEntity<?> getVentas(@RequestParam String username) {
         String msj = "";
 
         try {
-            List<Venta> ventas = commerceService.findAllVentas();
+            List<Venta> ventas = commerceService.findAllVentas(username);
             return new ResponseEntity<>(ventas, HttpStatus.OK);
         } catch (Throwable e) {
             msj = e.getMessage();

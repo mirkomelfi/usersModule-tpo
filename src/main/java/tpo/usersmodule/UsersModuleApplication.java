@@ -12,7 +12,9 @@ import tpo.usersmodule.model.dao.LogDAOImpl;
 import tpo.usersmodule.model.dao.ProductoDAOImpl;
 import tpo.usersmodule.model.dao.VentaDAOImpl;
 import tpo.usersmodule.model.entity.*;
+import tpo.usersmodule.service.CommerceServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class UsersModuleApplication {
         LogDAOImpl logDAO=a.getBean(LogDAOImpl.class);
         ProductoDAOImpl productoDAO=a.getBean(ProductoDAOImpl.class);
         VentaDAOImpl ventaDAO=a.getBean(VentaDAOImpl.class);
+        CommerceServiceImpl commerceService=a.getBean(CommerceServiceImpl.class);
 
         System.out.println("Pre broker");
         Broker broker = new Broker(
@@ -66,14 +69,14 @@ public class UsersModuleApplication {
                         if (datos!=null) {
                             List<String> jsonArray= Utilities.convertString(datos);
 
-                            productoDAO.deleteAll();
 
-
+                            List<Producto> arrayProductos=new ArrayList<>();
                             for (String s : jsonArray) {
-                                System.out.println(s);
                                 Producto p = Utilities.convertElement(s, Producto.class);
-                                productoDAO.save(p);
+                                arrayProductos.add(p);
                             }
+
+                            commerceService.updateAll(arrayProductos);
 
                             logDAO.save(new Log("Update productos"));
                         }
@@ -82,19 +85,32 @@ public class UsersModuleApplication {
 
                     if (body.getUseCase().contentEquals("Pedidos")){
 
-                        if (datos!=null) {
-                            List<String> jsonArray= Utilities.convertString(datos);
+                        if (!body.getTarget().contentEquals("Error")) {
+                            System.out.println("Entre. Xq el user tiene ventas");
+                            System.out.println(body.getTarget());
 
-                            ventaDAO.deleteAll();
+                            ventaDAO.deleteAll(body.getTarget());
+                            System.out.println(body.getType());
+                            System.out.println(Types.ARRAY.name());
+                            System.out.println(body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase()));
+                            if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
 
-
-                            for (String s : jsonArray) {
-                                System.out.println(s);
-                                Venta v = Utilities.convertElement(s, Venta.class);
+                                System.out.println(datos);
+                                List<String> jsonArray= Utilities.convertString(datos);
+                                for (String s : jsonArray) {
+                                    System.out.println(s);
+                                    Venta v = Utilities.convertElement(s, Venta.class);
+                                    ventaDAO.save(v);
+                                }
+                            }
+                            if (body.getType().contentEquals(Types.JSON.name())){
+                                Venta v = Utilities.convertBody(body, Venta.class);
+                                System.out.println(v);
                                 ventaDAO.save(v);
                             }
 
-                            logDAO.save(new Log("Update productos"));
+
+                            logDAO.save(new Log("Update ventas"));
                         }
 
                     }
@@ -105,9 +121,6 @@ public class UsersModuleApplication {
                     System.out.println("RuntimeException");
                     throw new RuntimeException(e);
                 }
-
-
-                //Los datos enviados desde el módulo de origen se encuentran en el atributo payload del body.
 
 
             }
