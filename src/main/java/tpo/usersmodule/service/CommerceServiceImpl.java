@@ -3,13 +3,11 @@ package tpo.usersmodule.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import tpo.usersmodule.model.dao.CarritoDAOImpl;
 import tpo.usersmodule.model.dao.ProductoDAOImpl;
 
 import tpo.usersmodule.model.dao.VentaDAOImpl;
-import tpo.usersmodule.model.entity.Producto;
-import tpo.usersmodule.model.entity.Imagen;
-import tpo.usersmodule.model.entity.Usuario;
-import tpo.usersmodule.model.entity.Venta;
+import tpo.usersmodule.model.entity.*;
 
 import java.util.List;
 
@@ -19,6 +17,8 @@ public class CommerceServiceImpl {
     private ProductoDAOImpl productoDAO;
     @Autowired
     private VentaDAOImpl ventaDAO;
+    @Autowired
+    private CarritoDAOImpl carritoDAO;
 
     public Producto findProductoById(long id) {
         Producto producto = productoDAO.findById(id);
@@ -36,6 +36,39 @@ public class CommerceServiceImpl {
             throw new Error("No se encontraron productos");
         return productos;
     }
+
+    public void saveCart(Carrito carrito) {
+
+        try {
+            carritoDAO.save(carrito);
+            return;
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+
+    public Carrito getCart(String username) {
+
+        try {
+            return carritoDAO.findByUsername(username);
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+
+    public void deleteCart(String username) {
+
+        try {
+            carritoDAO.deleteById(username);
+            return;
+        } catch (Exception e) {
+            throw new Error("Error interno en la BD");
+        }
+
+    }
+
 
     public Venta findVentaById(int id) {
         Venta venta = ventaDAO.findById(id);

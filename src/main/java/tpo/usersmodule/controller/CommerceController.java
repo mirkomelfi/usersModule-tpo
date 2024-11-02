@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tpo.usersmodule.controller.dtos.ActividadDTO;
 import tpo.usersmodule.controller.dtos.UsuarioDTO;
-import tpo.usersmodule.model.entity.Actividad;
-import tpo.usersmodule.model.entity.Producto;
-import tpo.usersmodule.model.entity.Usuario;
-import tpo.usersmodule.model.entity.Venta;
+import tpo.usersmodule.model.entity.*;
 import ar.edu.uade.*;
 import tpo.usersmodule.service.CommerceServiceImpl;
 import tpo.usersmodule.service.IActividadService;
@@ -171,4 +168,43 @@ public class CommerceController {
     }
 
 
+    @GetMapping("/carrito")
+    public ResponseEntity<?> getCart(@RequestParam String username) {
+        try {
+            Carrito c = commerceService.getCart(username);
+
+            return new ResponseEntity<>(c, HttpStatus.OK);
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
+    @PostMapping("/carrito")
+    public ResponseEntity<?> createCart(@RequestBody Carrito carrito) {
+        try {
+            commerceService.saveCart(carrito);
+
+            return new ResponseEntity<>(new Mensaje("Creado con exito"), HttpStatus.OK);
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
+    @DeleteMapping("/carrito")
+    public ResponseEntity<?> deleteCart(@RequestParam String username) {
+        try {
+           commerceService.deleteCart(username);
+            return new ResponseEntity<>(new Mensaje("Eliminado correctamente"), HttpStatus.OK);
+        } catch (Throwable e) {
+            String msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_FOUND);
+        }
+
+    }
 }
