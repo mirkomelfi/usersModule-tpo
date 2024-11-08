@@ -61,41 +61,36 @@ public class UsersModuleApplication {
                 try {
                     body = Utilities.convertDelivery(delivery);
                     String datos = body.getPayload();
-                        if (body.getUseCase().contentEquals("Prueba")){
-                            System.out.println(datos);
-                        }
-                        if (body.getUseCase().contentEquals("Productos")){
-
-                        if (datos!=null) {
-                            List<String> jsonArray= Utilities.convertString(datos);
-
-
+                    if (body.getUseCase().contentEquals("Prueba")){
+                        System.out.println(datos);
+                    }
+                    if (body.getUseCase().contentEquals("Productos")){
+                        if (body.getTarget().contentEquals("Error")){
+                            System.out.println("Error en CU: "+body.getUseCase());
+                        }else{
                             List<Producto> arrayProductos=new ArrayList<>();
-                            for (String s : jsonArray) {
-                                Producto p = Utilities.convertElement(s, Producto.class);
+                            if (body.getType().contentEquals(Types.JSON.name())){
+                                Producto p = Utilities.convertBody(body, Producto.class);
                                 arrayProductos.add(p);
                             }
-
+                            if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                List<String> jsonArray= Utilities.convertString(datos);
+                                for (String s : jsonArray) {
+                                    Producto p = Utilities.convertElement(s, Producto.class);
+                                    arrayProductos.add(p);
+                                }
+                            }
                             commerceService.updateAll(arrayProductos);
-
                             logDAO.save(new Log("Update productos"));
                         }
-
-                        }
+                    }
 
                     if (body.getUseCase().contentEquals("Pedidos")){
-
-                        if (!body.getTarget().contentEquals("Error")) {
-                            System.out.println("Entre. Xq el user tiene ventas");
-                            System.out.println(body.getTarget());
-
+                        if (body.getTarget().contentEquals("Error")){
+                            System.out.println("Error en CU: "+body.getUseCase());
+                        }else{
                             ventaDAO.deleteAll(body.getTarget());
-                            System.out.println(body.getType());
-                            System.out.println(Types.ARRAY.name());
-                            System.out.println(body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase()));
                             if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
-
-                                System.out.println(datos);
                                 List<String> jsonArray= Utilities.convertString(datos);
                                 for (String s : jsonArray) {
                                     System.out.println(s);
@@ -108,21 +103,14 @@ public class UsersModuleApplication {
                                 System.out.println(v);
                                 ventaDAO.save(v);
                             }
-
-
                             logDAO.save(new Log("Update ventas"));
                         }
-
                     }
-
-
 
                 } catch (ConverterException e) {
                     System.out.println("RuntimeException");
                     throw new RuntimeException(e);
                 }
-
-
             }
         });
 
