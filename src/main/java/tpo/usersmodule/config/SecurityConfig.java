@@ -52,7 +52,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/login","/actividades","/noticias","/register","/historia","/autoridades","/productosUpdate","/finalizarCarrito","/productos","/ventas","/misPedidos","/productos/:id","productos/:id","productos/","/productos/*","/productos/**","productos/*","productos/**");
+		return (web) -> web.ignoring().requestMatchers("/login","/actividades","/noticias","/register","/historia","/autoridades","/productosUpdate","/finalizarCarrito","/productos","/ventas","/misPedidos","/productos/:id","productos/:id","productos/","/productos/*","/productos/**","productos/*","productos/**","/ws","ws");
 	}
 
 	@Bean

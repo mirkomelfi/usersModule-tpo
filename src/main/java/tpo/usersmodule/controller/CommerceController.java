@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tpo.usersmodule.config.WebSocketHandler;
 import tpo.usersmodule.controller.dtos.ActividadDTO;
 import tpo.usersmodule.controller.dtos.UsuarioDTO;
 import tpo.usersmodule.model.entity.*;
@@ -24,6 +25,13 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class CommerceController {
+   // private final WebSocketHandler webSocketHandler;
+
+    /*@Autowired
+    public CommerceController(WebSocketHandler webSocketHandler) {
+        this.webSocketHandler = webSocketHandler;
+    }*/
+
     @Autowired
     private IUsuarioService usuarioService;
     @Autowired
