@@ -45,18 +45,11 @@ public class UsersModuleApplication {
                 "usuario",
                 "7@3635@N%8%^%#7%f2!5"
 
-                /*System.getenv("HOST"),
-                Integer.parseInt(
-                        System.getenv("PORT")
-                ),
-                System.getenv("USER"),
-                System.getenv("PASSWORD")
-                 */
         );
 
         System.out.println("post broker");
         Connection consumerConnection = broker.startConnection();
-
+        Map<String, WebSocketSession> sessions = webSocketHandler.getSessions();
         //Redefino el callback para los mensajes recibidos.
         Consumer consumer = new Consumer(new CallbackInterface() {
             @Override
@@ -68,9 +61,7 @@ public class UsersModuleApplication {
                 try {
                     body = Utilities.convertDelivery(delivery);
                     String datos = body.getPayload();
-                    if (body.getUseCase().contentEquals("Prueba")){
-                        System.out.println(datos);
-                    }
+
                     if (body.getUseCase().contentEquals("Productos")){
                         if (body.getTarget().contentEquals("Error")){
                             System.out.println("Error en CU: "+body.getUseCase());
@@ -88,9 +79,9 @@ public class UsersModuleApplication {
                                 }
                             }
                             System.out.println(arrayProductos);
-                            commerceService.updateAll(arrayProductos);
+                            //commerceService.updateAll(arrayProductos);
 
-                            Map<String, WebSocketSession> sessions = webSocketHandler.getSessions();
+                            //Map<String, WebSocketSession> sessions = webSocketHandler.getSessions();
 
                             // Iteramos sobre todas las sesiones conectadas y enviamos el mensaje
                             sessions.forEach((sessionId, session) -> {
@@ -112,21 +103,21 @@ public class UsersModuleApplication {
                         }else{
                             String username= body.getTarget();
                             List<Venta> ventasArray=new ArrayList<>();
-                            ventaDAO.deleteAll(body.getTarget());
+                            //ventaDAO.deleteAll(body.getTarget());
                             if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
                                 List<String> jsonArray= Utilities.convertString(datos);
                                 for (String s : jsonArray) {
                                     System.out.println(s);
                                     Venta v = Utilities.convertElement(s, Venta.class);
                                     ventasArray.add(v);
-                                    ventaDAO.save(v);
+                                    //ventaDAO.save(v);
                                 }
                             }
                             if (body.getType().contentEquals(Types.JSON.name())){
                                 Venta v = Utilities.convertBody(body, Venta.class);
                                 System.out.println(v);
                                 ventasArray.add(v);
-                                ventaDAO.save(v);
+                                //ventaDAO.save(v);
                             }
 
                             webSocketHandler.sendSalesToUser(username, ventasArray);
@@ -135,6 +126,129 @@ public class UsersModuleApplication {
                         }
                     }
 
+
+
+                    if (body.getUseCase().contentEquals("Reclamos")){
+                        if (body.getTarget().contentEquals("Error")){
+                            System.out.println("Error en CU: "+body.getUseCase());
+                        }else{
+                            String username= body.getTarget();
+                            if (username==null){
+                                List<String> tiposReclamoArray=new ArrayList<>();
+                                if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    List<String> jsonArray= Utilities.convertString(datos);
+                                    for (String s : jsonArray) {
+                                        tiposReclamoArray.add(s);
+                                    }
+                                }
+                                sessions.forEach((sessionId, session) -> {
+                                    try {
+                                        // Enviar los productos a cada cliente conectado
+                                        webSocketHandler.sendTiposReclamo(sessionId, tiposReclamoArray);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }else{
+
+                                List<Reclamo> reclamosArray=new ArrayList<>();
+                               // ventaDAO.deleteAll(body.getTarget());
+                                if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    List<String> jsonArray= Utilities.convertString(datos);
+                                    for (String s : jsonArray) {
+                                        System.out.println(s);
+                                        Reclamo r = Utilities.convertElement(s, Reclamo.class);
+                                        reclamosArray.add(r);
+
+                                    }
+                                }
+                                if (body.getType().contentEquals(Types.JSON.name())){
+                                    Reclamo r = Utilities.convertBody(body, Reclamo.class);
+                                    System.out.println(r);
+                                    reclamosArray.add(r);
+
+                                }
+
+                                webSocketHandler.sendReclamosToUser(username, reclamosArray);
+                            }
+                            logDAO.save(new Log("Update ventas"));
+                        }
+                    }
+
+
+                    if (body.getUseCase().contentEquals("Inversiones")){
+                        if (body.getTarget().contentEquals("Error")){
+                            System.out.println("Error en CU: "+body.getUseCase());
+                        }else{
+                            String username= body.getTarget();
+                            if (username==null){
+                                List<Inversion> inversionesArray=new ArrayList<>();
+                                if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    List<String> jsonArray= Utilities.convertString(datos);
+                                    for (String s : jsonArray) {
+                                        Inversion i = Utilities.convertElement(s, Inversion.class);
+                                        inversionesArray.add(i);
+                                    }
+                                }
+                                if (body.getType().contentEquals(Types.JSON.name())){
+                                    Inversion i = Utilities.convertBody(body, Inversion.class);
+                                    System.out.println(i);
+                                    inversionesArray.add(i);
+                                }
+
+                                sessions.forEach((sessionId, session) -> {
+                                    try {
+                                        // Enviar los productos a cada cliente conectado
+                                        webSocketHandler.sendInversiones(sessionId, inversionesArray);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }else{
+
+                                List<Inversion> inversionesArray=new ArrayList<>();
+                                // ventaDAO.deleteAll(body.getTarget());
+                                if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    List<String> jsonArray= Utilities.convertString(datos);
+                                    for (String s : jsonArray) {
+                                        System.out.println(s);
+                                        Inversion i = Utilities.convertElement(s, Inversion.class);
+                                        inversionesArray.add(i);
+
+                                    }
+                                }
+                                if (body.getType().contentEquals(Types.JSON.name())){
+                                    Inversion i = Utilities.convertBody(body, Inversion.class);
+                                    System.out.println(i);
+                                    inversionesArray.add(i);
+
+                                }
+
+                                webSocketHandler.sendInversionesToUser(username, inversionesArray);
+                            }
+                            logDAO.save(new Log("Update ventas"));
+                        }
+                    }
+
+                    if (body.getUseCase().contentEquals("Balance")){
+                        if (body.getTarget().contentEquals("Error")){
+                            System.out.println("Error en CU: "+body.getUseCase());
+                        }else{
+                            if (body.getType().contentEquals(Types.JSON.name())){
+                                Balance b = Utilities.convertBody(body, Balance.class);
+                                System.out.println(b);
+                                sessions.forEach((sessionId, session) -> {
+                                    try {
+                                        // Enviar los productos a cada cliente conectado
+                                        webSocketHandler.sendBalance(sessionId, b);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }
+
+                        }
+                    }
 
                 } catch (ConverterException e) {
                     System.out.println("RuntimeException");

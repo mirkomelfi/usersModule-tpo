@@ -36,6 +36,9 @@ public class CommerceController {
     private IUsuarioService usuarioService;
     @Autowired
     private CommerceServiceImpl commerceService;
+
+
+    //ECOMMERCE
     @CrossOrigin
     @PostMapping("/finalizarCarrito")
     public ResponseEntity<?> crearVenta(@RequestBody Venta venta) {
@@ -215,4 +218,228 @@ public class CommerceController {
         }
 
     }
+
+    // GESTION FINANCIERA
+
+    @CrossOrigin
+    @GetMapping("/balance")
+    public ResponseEntity<?> getBalanceCore() {
+        String msj = "";
+
+        try {
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Balance", "token", Types.JSON,null,"600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Productos solicitados exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+    @CrossOrigin
+    @GetMapping("/inversiones")
+    public ResponseEntity<?> getInversionesCore() {
+        String msj = "";
+
+        try {
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Inversiones", "token", Types.JSON,null,"600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Inversiones solicitados exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/misInversiones")
+    public ResponseEntity<?> getMisInversionesCore(@RequestParam String username) {
+        String msj = "";
+
+        try {
+
+            usuarioService.findByUsername(username);
+
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, username, Modules.GESTION_INTERNA, "Inversiones", "token", Types.JSON,null,"600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Inversiones solicitadas exitosamente para el user "+username;
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+
+    @CrossOrigin
+    @PostMapping("/finalizarInversion")
+    public ResponseEntity<?> crearInversion(@RequestBody Inversion inversion) {
+        String msj = "";
+
+        try {
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, Utilities.convertClass(inversion), Modules.GESTION_FINANCIERA, "Inversion", "token", Types.JSON,"Venta","600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Inversion creada exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+    // GESTION INTERNA
+    @CrossOrigin
+    @GetMapping("/misReclamos")
+    public ResponseEntity<?> getReclamosCore(@RequestParam String username) {
+        String msj = "";
+
+        try {
+
+            usuarioService.findByUsername(username);
+
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, username, Modules.GESTION_INTERNA, "Reclamos", "token", Types.JSON,null,"600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Pedidos solicitados exitosamente para el user "+username;
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+    @CrossOrigin
+    @GetMapping("/tiposReclamo")
+    public ResponseEntity<?> getTiposReclamoCore() {
+        String msj = "";
+
+        try {
+
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, null, Modules.GESTION_INTERNA, "Reclamos", "token", Types.JSON,null,"600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Tipos de reclamo solicitados exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+    @CrossOrigin
+    @PostMapping("/finalizarReclamo")
+    public ResponseEntity<?> crearReclamo(@RequestBody Reclamo reclamo) {
+        String msj = "";
+
+        try {
+            Broker broker = new Broker(
+                    "3.142.225.39",
+                    5672,
+                    "usuario",
+                    "7@3635@N%8%^%#7%f2!5"
+
+            );
+            Connection publisherConnection = broker.startConnection();
+
+            Publisher publisher = new Publisher(Modules.USUARIO);
+
+            publisher.publish(publisherConnection, Utilities.convertClass(reclamo), Modules.GESTION_INTERNA, "Reclamo", "token", Types.JSON,"Venta","600");
+
+            broker.endConnection(publisherConnection);
+
+            msj = "Reclamo creado exitosamente";
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.OK);
+        } catch (Throwable e) {
+            msj = e.getMessage();
+            return new ResponseEntity<>(new Mensaje(msj), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
+
+
 }

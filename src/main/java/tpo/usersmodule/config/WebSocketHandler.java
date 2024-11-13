@@ -5,8 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import tpo.usersmodule.model.entity.Producto;
-import tpo.usersmodule.model.entity.Venta;
+import tpo.usersmodule.model.entity.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -86,6 +85,81 @@ public class WebSocketHandler extends TextWebSocketHandler {
                     System.out.println("Enviando ventas a usuario con ID: " + userId);
                 }
             }
+        }
+    }
+
+    public void sendReclamosToUser(String userId, List<Reclamo> reclamos) throws IOException {
+        // Buscar la sesión WebSocket asociada con el userId
+        for (Map.Entry<String, String> entry : userSessions.entrySet()) {
+            if (entry.getValue().equals(userId)) {
+                WebSocketSession session = sessions.get(entry.getKey());
+                if (session != null && session.isOpen()) {
+                    // Convertimos la lista de ventas a JSON
+                    String reclamosJson = objectMapper.writeValueAsString(reclamos);
+                    System.out.println(reclamosJson);
+
+                    // Enviamos el JSON con las ventas al usuario específico
+                    session.sendMessage(new TextMessage(reclamosJson));
+                    System.out.println("Enviando reclamos a usuario con ID: " + userId);
+                }
+            }
+        }
+    }
+
+    public void sendTiposReclamo(String sessionId, List<String> tiposReclamoList) throws IOException {
+        WebSocketSession session = sessions.get(sessionId);  // Obtener la sesión usando el sessionId
+        if (session != null && session.isOpen()) {
+            // Si la sesión está abierta, enviamos el mensaje con los productos
+            String tiposReclamoJson = objectMapper.writeValueAsString(tiposReclamoList);
+            System.out.println(tiposReclamoJson);
+            // Enviar los productos como un mensaje JSON al cliente
+            session.sendMessage(new TextMessage(tiposReclamoJson));
+        } else {
+            System.out.println("No se pudo encontrar la sesión o la sesión está cerrada.");
+        }
+    }
+
+    public void sendInversiones(String sessionId, List<Inversion> inversionList) throws IOException {
+        WebSocketSession session = sessions.get(sessionId);  // Obtener la sesión usando el sessionId
+        if (session != null && session.isOpen()) {
+            // Si la sesión está abierta, enviamos el mensaje con los productos
+            String inversionJson = objectMapper.writeValueAsString(inversionList);
+            System.out.println(inversionJson);
+            // Enviar los productos como un mensaje JSON al cliente
+            session.sendMessage(new TextMessage(inversionJson));
+        } else {
+            System.out.println("No se pudo encontrar la sesión o la sesión está cerrada.");
+        }
+    }
+
+    public void sendInversionesToUser(String userId, List<Inversion> inversiones) throws IOException {
+        // Buscar la sesión WebSocket asociada con el userId
+        for (Map.Entry<String, String> entry : userSessions.entrySet()) {
+            if (entry.getValue().equals(userId)) {
+                WebSocketSession session = sessions.get(entry.getKey());
+                if (session != null && session.isOpen()) {
+                    // Convertimos la lista de ventas a JSON
+                    String inversionesJson = objectMapper.writeValueAsString(inversiones);
+                    System.out.println(inversionesJson);
+
+                    // Enviamos el JSON con las ventas al usuario específico
+                    session.sendMessage(new TextMessage(inversionesJson));
+                    System.out.println("Enviando inversiones a usuario con ID: " + userId);
+                }
+            }
+        }
+    }
+
+    public void sendBalance(String sessionId, Balance balance) throws IOException {
+        WebSocketSession session = sessions.get(sessionId);  // Obtener la sesión usando el sessionId
+        if (session != null && session.isOpen()) {
+            // Si la sesión está abierta, enviamos el mensaje con los productos
+            String balanceJson = objectMapper.writeValueAsString(balance);
+            System.out.println(balanceJson);
+            // Enviar los productos como un mensaje JSON al cliente
+            session.sendMessage(new TextMessage(balanceJson));
+        } else {
+            System.out.println("No se pudo encontrar la sesión o la sesión está cerrada.");
         }
     }
 
