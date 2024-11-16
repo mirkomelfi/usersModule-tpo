@@ -333,7 +333,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, Utilities.convertClass(inversion), Modules.GESTION_FINANCIERA, "Inversion", "token", Types.JSON,"Venta","600");
+            publisher.publish(publisherConnection, Utilities.convertClass(inversion), Modules.GESTION_FINANCIERA, "Inversion", "token", Types.JSON,null,"600");
 
             broker.endConnection(publisherConnection);
 

@@ -94,6 +94,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     }
 
+
+
     @Override
     public void deleteByDni(int dni) {
         Usuario user;
@@ -207,11 +209,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
             u.setNombre(data.getNombre());
         if (data.getApellido() != null)
             u.setApellido(data.getApellido());
-        if (data.getUsername() != null) {
+        /*if (data.getUsername() != null) {
             if (u.getRol().contentEquals("ROL_ADMIN"))
                 throw new Error("No esta permitido cambiar el username de este usuario");
             u.setUsername(data.getUsername());
-        }
+        }*/
+        if (data.getRol() != null)
+            u.setRol(data.getRol());
         if (data.getPassword() != null) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             u.setPassword(passwordEncoder.encode(data.getPassword()));

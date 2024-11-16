@@ -207,7 +207,7 @@ public class UsuarioController {
 
     }
 
-    @PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
+    //@PreAuthorize("hasAuthority('ROL_ADMIN') or hasAuthority('ROL_USER')")
     @PutMapping("/cambiarPerfil")
     public ResponseEntity<?> updateLoggedUser(@RequestBody CredencialesDTO data) {
         try {
@@ -216,6 +216,7 @@ public class UsuarioController {
             user.setApellido(data.getApellido());
             user.setUsername(data.getUsername());
             user.setPassword(data.getPassword());
+            user.setRol(data.getRol());
             usuarioService.update(user);
             return new ResponseEntity<>(new Mensaje("Perfil actualizado"), HttpStatus.OK);
         } catch (Throwable e) {
