@@ -48,6 +48,9 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Feedback> feedbacks;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	private Carrito carrito;
+
 
 	@ManyToMany//(cascade = CascadeType.ALL)
 	@JoinTable(
@@ -64,6 +67,7 @@ public class Usuario {
 		this.feedbacks=new ArrayList<>();
 		this.actividades=new ArrayList<>();
 		this.direccion=new Direccion();
+		this.carrito=new Carrito();
 	}
 
 	public Usuario(String username, String password, String nombre, String apellido, String rol, Direccion direccion, int dni, int telefono,LocalDate fechaNacimiento) {
@@ -89,6 +93,15 @@ public class Usuario {
 		this.propuestas=new ArrayList<>();
 		this.feedbacks=new ArrayList<>();
 		this.actividades=new ArrayList<>();
+		this.carrito=new Carrito();
+	}
+
+	public Carrito getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(Carrito carrito) {
+		this.carrito = carrito;
 	}
 
 	public String getUsername() {

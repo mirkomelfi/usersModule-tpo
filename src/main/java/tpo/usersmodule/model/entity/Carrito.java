@@ -11,30 +11,32 @@ import java.util.List;
 public class Carrito {
 	@Column(nullable = false)
 	@Id
-	String username;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	int idCarrito;
 	@ManyToMany//(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "user_cart",
-			joinColumns = @JoinColumn(name = "username"),
+			joinColumns = @JoinColumn(name = "idCarrito"),
 			inverseJoinColumns = @JoinColumn(name = "product_id")
 	)
 	private List<Producto> productos;
 
 
 	public Carrito() {
+		this.productos = new ArrayList<>();
 	}
 
-	public Carrito(String username, List<Producto> productos) {
-		this.username = username;
-		this.productos = productos;
+	public Carrito(int idCarrito, List<Producto> productos) {
+		this.idCarrito = idCarrito;
+		this.productos = new ArrayList<>();
 	}
 
-	public String getUsername() {
-		return username;
+	public int getIdCarrito() {
+		return idCarrito;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setIdCarrito(int idCarrito) {
+		this.idCarrito = idCarrito;
 	}
 
 	public List<Producto> getProductos() {

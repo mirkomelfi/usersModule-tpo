@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import tpo.usersmodule.model.dao.CarritoDAOImpl;
 import tpo.usersmodule.model.dao.ProductoDAOImpl;
 
+import tpo.usersmodule.model.dao.UsuarioDAOImpl;
 import tpo.usersmodule.model.dao.VentaDAOImpl;
 import tpo.usersmodule.model.entity.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +21,8 @@ public class CommerceServiceImpl {
     private VentaDAOImpl ventaDAO;
     @Autowired
     private CarritoDAOImpl carritoDAO;
+    @Autowired
+    private UsuarioDAOImpl usuarioDAO;
 
     public Producto findProductoById(long id) {
         Producto producto = productoDAO.findById(id);
@@ -37,13 +41,18 @@ public class CommerceServiceImpl {
         return productos;
     }
 
-    public void saveCart(Carrito carrito) {
+    public void saveCart(String username,Carrito carrito) {
 
         try {
-            carritoDAO.save(carrito);
+            //Carrito newCart= new Carrito();
+            //newCart.setUsername(carrito.getUsername());
+            //newCart.setProductos(carrito.getProductos());
+            Usuario user=usuarioDAO.findByUsername(username);
+            user.setCarrito(carrito);
+            usuarioDAO.save(user);
             return;
         } catch (Exception e) {
-            throw new Error("Error interno en la BD");
+            throw new Error("Error interno en la BD (service saveCart)",e);
         }
 
     }
@@ -61,7 +70,9 @@ public class CommerceServiceImpl {
     public void deleteCart(String username) {
 
         try {
-            carritoDAO.deleteById(username);
+            Usuario user=usuarioDAO.findByUsername(username);
+            user.setCarrito(new Carrito());
+            usuarioDAO.save(user);
             return;
         } catch (Exception e) {
             throw new Error("Error interno en la BD");

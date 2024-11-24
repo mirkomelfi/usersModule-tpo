@@ -117,6 +117,7 @@ public class UsuarioController {
     }
 
     //@PreAuthorize("hasAuthority('ROL_ADMIN')")
+    @CrossOrigin
     @PostMapping("/admin/register")
     public ResponseEntity<?> addUser(@RequestBody Usuario user) {
         String msj = "";

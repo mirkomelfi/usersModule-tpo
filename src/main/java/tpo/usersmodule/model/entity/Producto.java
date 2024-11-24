@@ -19,6 +19,7 @@ public class Producto {
     private Float descuentoSocios;
     private Float descuentoNoSocios;
     private String categoria;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> caracteristicas;
     @ElementCollection(fetch = FetchType.EAGER)
@@ -28,7 +29,7 @@ public class Producto {
         this.caracteristicas=new HashSet<>();
     }
 
-    public Producto(long idProducto, String nombre, String descripcion, Double precioVenta, Integer stockActual, Float descuentoEfectivo, Float descuentoSocios, Float descuentoNoSocios, String categoria, Set<String> caracteristicas, Set<String> talles) {
+    public Producto(long idProducto,String nombre, String descripcion, Double precioVenta, Integer stockActual, Float descuentoEfectivo, Float descuentoSocios, Float descuentoNoSocios, String categoria, Set<String> caracteristicas, Set<String> talles) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -40,7 +41,9 @@ public class Producto {
         this.categoria = categoria;
         this.caracteristicas = caracteristicas;
         this.talles = talles;
+
     }
+
 
     public long getIdProducto() {
         return idProducto;

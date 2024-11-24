@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tpo.usersmodule.config.WebSocketHandler;
 import tpo.usersmodule.controller.Mensaje;
 import tpo.usersmodule.model.dao.LogDAOImpl;
@@ -24,6 +25,7 @@ import java.util.Map;
 import org.springframework.web.socket.WebSocketSession;
 
 @SpringBootApplication
+@EnableScheduling
 public class UsersModuleApplication {
 
     public static void main(String[] args)  throws Exception{
@@ -40,7 +42,7 @@ public class UsersModuleApplication {
 
         System.out.println("Pre broker");
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "usuario",
                 "7@3635@N%8%^%#7%f2!5"
@@ -61,7 +63,10 @@ public class UsersModuleApplication {
                 try {
                     body = Utilities.convertDelivery(delivery);
                     String datos = body.getPayload();
+                    if (body.getUseCase().contentEquals("Prueba")){
+                        System.out.println("CU Prueba: "+datos);
 
+                    }
                     if (body.getUseCase().contentEquals("Productos")){
                         if (body.getTarget().contentEquals("Error")){
                             System.out.println("Error en CU: "+body.getUseCase());
@@ -79,7 +84,7 @@ public class UsersModuleApplication {
                                 }
                             }
                             System.out.println(arrayProductos);
-                            //commerceService.updateAll(arrayProductos);
+                            commerceService.updateAll(arrayProductos);
 
                             //Map<String, WebSocketSession> sessions = webSocketHandler.getSessions();
 
@@ -181,6 +186,8 @@ public class UsersModuleApplication {
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
                             String username= body.getTarget();
+
+                            System.out.println("getType(: "+body.getType());
                             if (username==null){
                                 List<Inversion> inversionesArray=new ArrayList<>();
                                 if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
@@ -205,7 +212,7 @@ public class UsersModuleApplication {
                                     }
                                 });
                             }else{
-
+                                System.out.println(datos);
                                 List<Inversion> inversionesArray=new ArrayList<>();
                                 // ventaDAO.deleteAll(body.getTarget());
                                 if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
