@@ -17,7 +17,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         // Register WebSocket handler at "/ws" endpoint
         registry.addHandler(webSocketHandler, "/ws")
-                .setAllowedOrigins("http://localhost:3000");  // Allow all origins for simplicity
+                .setAllowedOrigins("https://main.d220bqspbr415z.amplifyapp.com");  // Allow all origins for simplicity
                // .withSockJS();
     }
 }
