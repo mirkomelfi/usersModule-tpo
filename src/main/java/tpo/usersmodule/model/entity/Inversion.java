@@ -1,30 +1,52 @@
 package tpo.usersmodule.model.entity;
 
-public class Inversion {
-    String username;
-    float monto;
+import java.time.LocalDateTime;
 
-    public Inversion(String username, float monto) {
-        this.username = username;
-        this.monto = monto;
-    }
+public class Inversion {
+    String usuario;
+    float amount;
+    String note;
+    String date;
 
     public Inversion() {
     }
 
-    public String getUsername() {
-        return username;
+    public Inversion(String usuario, float amount, String note, String date) {
+        this.usuario = usuario;
+        this.amount = amount;
+        this.note = note;
+        this.date = date;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getNote() {
+        return note;
     }
 
-    public float getMonto() {
-        return monto;
+    public void setNote(String note) {
+        this.note = note;
     }
 
-    public void setMonto(float monto) {
-        this.monto = monto;
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
     }
 }

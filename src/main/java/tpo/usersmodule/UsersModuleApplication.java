@@ -62,13 +62,23 @@ public class UsersModuleApplication {
                 Body body = null;
                 try {
                     body = Utilities.convertDelivery(delivery);
+                    System.out.print(body.getUseCase());
                     String datos = body.getPayload();
+                    System.out.print(datos);
                     if (body.getUseCase().contentEquals("Prueba")){
                         System.out.println("CU Prueba: "+datos);
 
                     }
                     if (body.getUseCase().contentEquals("Productos")){
                         if (body.getTarget().contentEquals("Error")){
+                            sessions.forEach((sessionId, session) -> {
+                                try {
+                                    // Enviar los productos a cada cliente conectado
+                                    webSocketHandler.sendError(sessionId, "Error. No hay productos");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
                             List<Producto> arrayProductos=new ArrayList<>();
@@ -103,23 +113,35 @@ public class UsersModuleApplication {
                     }
 
                     if (body.getUseCase().contentEquals("Pedidos")){
+                        System.out.println(body.getTarget());
                         if (body.getTarget().contentEquals("Error")){
+                            sessions.forEach((sessionId, session) -> {
+                                try {
+                                    // Enviar los productos a cada cliente conectado
+                                    webSocketHandler.sendError(sessionId, "Error. No hay pedidos");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
                             String username= body.getTarget();
-                            List<Venta> ventasArray=new ArrayList<>();
+                            List<VentaDTO> ventasArray=new ArrayList<>();
                             //ventaDAO.deleteAll(body.getTarget());
                             if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+
+                                System.out.println("array"+body.getType().toLowerCase());
                                 List<String> jsonArray= Utilities.convertString(datos);
                                 for (String s : jsonArray) {
                                     System.out.println(s);
-                                    Venta v = Utilities.convertElement(s, Venta.class);
+                                    VentaDTO v = Utilities.convertElement(s, VentaDTO.class);
                                     ventasArray.add(v);
                                     //ventaDAO.save(v);
                                 }
                             }
-                            if (body.getType().contentEquals(Types.JSON.name())){
-                                Venta v = Utilities.convertBody(body, Venta.class);
+                            else{
+                                System.out.println("json"+body.getType().toLowerCase());
+                                VentaDTO v = Utilities.convertBody(body, VentaDTO.class);
                                 System.out.println(v);
                                 ventasArray.add(v);
                                 //ventaDAO.save(v);
@@ -135,6 +157,14 @@ public class UsersModuleApplication {
 
                     if (body.getUseCase().contentEquals("Reclamos")){
                         if (body.getTarget().contentEquals("Error")){
+                            sessions.forEach((sessionId, session) -> {
+                                try {
+                                    // Enviar los productos a cada cliente conectado
+                                    webSocketHandler.sendError(sessionId, "Error. No hay reclamos");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
                             String username= body.getTarget();
@@ -167,7 +197,7 @@ public class UsersModuleApplication {
 
                                     }
                                 }
-                                if (body.getType().contentEquals(Types.JSON.name())){
+                                else {
                                     Reclamo r = Utilities.convertBody(body, Reclamo.class);
                                     System.out.println(r);
                                     reclamosArray.add(r);
@@ -183,15 +213,25 @@ public class UsersModuleApplication {
 
                     if (body.getUseCase().contentEquals("Inversiones")){
                         if (body.getTarget().contentEquals("Error")){
+                            sessions.forEach((sessionId, session) -> {
+                                try {
+                                    // Enviar los productos a cada cliente conectado
+                                    webSocketHandler.sendError(sessionId, "Error. No hay inversiones");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
                             String username= body.getTarget();
 
-                            System.out.println("getType(: "+body.getType());
+                            System.out.println("getType: "+body.getType());
                             if (username==null){
                                 List<Inversion> inversionesArray=new ArrayList<>();
                                 if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    System.out.println("datos: "+datos);
                                     List<String> jsonArray= Utilities.convertString(datos);
+                                    System.out.println("jsonArray: "+jsonArray);
                                     for (String s : jsonArray) {
                                         Inversion i = Utilities.convertElement(s, Inversion.class);
                                         inversionesArray.add(i);
@@ -216,7 +256,9 @@ public class UsersModuleApplication {
                                 List<Inversion> inversionesArray=new ArrayList<>();
                                 // ventaDAO.deleteAll(body.getTarget());
                                 if (body.getType().toLowerCase().contentEquals(Types.ARRAY.name().toLowerCase())){
+                                    System.out.println("datos: "+datos);
                                     List<String> jsonArray= Utilities.convertString(datos);
+                                    System.out.println("jsonArray: "+jsonArray);
                                     for (String s : jsonArray) {
                                         System.out.println(s);
                                         Inversion i = Utilities.convertElement(s, Inversion.class);
@@ -224,9 +266,9 @@ public class UsersModuleApplication {
 
                                     }
                                 }
-                                if (body.getType().contentEquals(Types.JSON.name())){
+                                if (body.getType().contentEquals(Types.JSON.name().toLowerCase())){
                                     Inversion i = Utilities.convertBody(body, Inversion.class);
-                                    System.out.println(i);
+                                    System.out.println("inversion: "+i);
                                     inversionesArray.add(i);
 
                                 }
@@ -239,12 +281,21 @@ public class UsersModuleApplication {
 
                     if (body.getUseCase().contentEquals("Balance")){
                         if (body.getTarget().contentEquals("Error")){
+                            sessions.forEach((sessionId, session) -> {
+                                try {
+                                    // Enviar los productos a cada cliente conectado
+                                    webSocketHandler.sendError(sessionId, "Error. No hay balance");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            });
                             System.out.println("Error en CU: "+body.getUseCase());
                         }else{
-                            if (body.getType().contentEquals(Types.JSON.name())){
+
                                 Balance b = Utilities.convertBody(body, Balance.class);
-                                System.out.println(b);
+                                System.out.println("balance: "+b);
                                 sessions.forEach((sessionId, session) -> {
+                                    System.out.print("sesion"+sessionId);
                                     try {
                                         // Enviar los productos a cada cliente conectado
                                         webSocketHandler.sendBalance(sessionId, b);
@@ -252,7 +303,7 @@ public class UsersModuleApplication {
                                         e.printStackTrace();
                                     }
                                 });
-                            }
+
 
                         }
                     }

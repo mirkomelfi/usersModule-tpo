@@ -62,7 +62,7 @@ public class CommerceController {
             venta.setFecha(new Date());
             venta.setCantidadDeProductos(venta.getProductos().size());
 
-            publisher.publish(publisherConnection, Utilities.convertClass(venta), Modules.E_COMMERCE, "Venta", "token", Types.JSON,"Venta","600",userCore);
+            publisher.publish(publisherConnection, Utilities.convertClass(venta), Modules.E_COMMERCE, "Venta", sesionController.getTokenJWTModulo(), Types.JSON,"Venta","600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -92,7 +92,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, null, Modules.E_COMMERCE, "Productos", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, null, Modules.E_COMMERCE, "Productos",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -137,7 +137,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, username, Modules.E_COMMERCE, "Pedidos", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, username, Modules.E_COMMERCE, "Pedidos",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -227,7 +227,7 @@ public class CommerceController {
 
     // GESTION FINANCIERA
 
-    @CrossOrigin
+
     @GetMapping("/balance")
     public ResponseEntity<?> getBalanceCore() {
         String msj = "";
@@ -244,7 +244,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Balance", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Balance",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -274,7 +274,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Inversiones", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, null, Modules.GESTION_FINANCIERA, "Inversiones",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -308,7 +308,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, username, Modules.GESTION_FINANCIERA, "Inversiones", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, username, Modules.GESTION_FINANCIERA, "Inversiones",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -336,10 +336,11 @@ public class CommerceController {
 
             );
             Connection publisherConnection = broker.startConnection();
-
+            System.out.println(inversion.getAmount());
+            System.out.println(inversion.getUsuario());
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, Utilities.convertClass(inversion), Modules.GESTION_FINANCIERA, "Inversion", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, Utilities.convertClass(inversion), Modules.GESTION_FINANCIERA, "Inversion",  sesionController.getTokenJWTModulo(), Types.JSON,inversion.getUsuario(),"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -372,7 +373,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, username, Modules.GESTION_INTERNA, "Reclamos", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, username, Modules.GESTION_INTERNA, "Reclamos",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -402,7 +403,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, null, Modules.GESTION_INTERNA, "Reclamos", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, null, Modules.GESTION_INTERNA, "Reclamos",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 
@@ -431,7 +432,7 @@ public class CommerceController {
 
             Publisher publisher = new Publisher(Modules.USUARIO);
 
-            publisher.publish(publisherConnection, Utilities.convertClass(reclamo), Modules.GESTION_INTERNA, "Reclamo", "token", Types.JSON,null,"600",userCore);
+            publisher.publish(publisherConnection, Utilities.convertClass(reclamo), Modules.GESTION_INTERNA, "Reclamo",  sesionController.getTokenJWTModulo(), Types.JSON,null,"600",userCore);
 
             broker.endConnection(publisherConnection);
 

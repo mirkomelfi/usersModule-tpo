@@ -1,15 +1,16 @@
 package tpo.usersmodule.model.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 
 
 public class Reclamo {
-	public Reclamo(Long id, String usuario, String tipoReclamo, Date fecha, String premisa, String comentario,
+	public Reclamo(Long id, int idPedido,String usuario, String tipoReclamo, String fecha, String premisa, String comentario,
 			String imagen, String estado) {
 		super();
 		this.id = id;
+		this.idPedido=idPedido;
 		this.usuario = usuario;
 		this.tipoReclamo = tipoReclamo;
 		this.fecha = fecha;
@@ -24,12 +25,20 @@ public class Reclamo {
 	}
 
     private Long id;
-
+	private int idPedido;
     private String usuario;
 
     private String tipoReclamo;
 
-	private Date fecha;
+	private String fecha;
+
+	public int getIdPedido() {
+		return idPedido;
+	}
+
+	public void setIdPedido(int idPedido) {
+		this.idPedido = idPedido;
+	}
 
 	private String premisa;
 
@@ -39,11 +48,11 @@ public class Reclamo {
 
 	private String estado;
 
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 

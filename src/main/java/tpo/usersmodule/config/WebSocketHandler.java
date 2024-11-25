@@ -70,7 +70,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     }
 
     // Método para enviar ventas a un usuario específico
-    public void sendSalesToUser(String userId, List<Venta> sales) throws IOException {
+    public void sendSalesToUser(String userId, List<VentaDTO> sales) throws IOException {
         // Buscar la sesión WebSocket asociada con el userId
         for (Map.Entry<String, String> entry : userSessions.entrySet()) {
             if (entry.getValue().equals(userId)) {
@@ -155,12 +155,22 @@ public class WebSocketHandler extends TextWebSocketHandler {
         if (session != null && session.isOpen()) {
             // Si la sesión está abierta, enviamos el mensaje con los productos
             String balanceJson = objectMapper.writeValueAsString(balance);
-            System.out.println(balanceJson);
+            System.out.println("Enviando balance: " + balanceJson);
+
             // Enviar los productos como un mensaje JSON al cliente
             session.sendMessage(new TextMessage(balanceJson));
         } else {
             System.out.println("No se pudo encontrar la sesión o la sesión está cerrada.");
         }
     }
-
+    public void sendError(String sessionId, String msj) throws IOException {
+        WebSocketSession session = sessions.get(sessionId);  // Obtener la sesión usando el sessionId
+        if (session != null && session.isOpen()) {
+            System.out.println("Enviando msj al front:"+msj);
+            // Enviar los productos como un mensaje JSON al cliente
+            session.sendMessage(new TextMessage(msj));
+        } else {
+            System.out.println("No se pudo encontrar la sesión o la sesión está cerrada.");
+        }
+    }
 }
